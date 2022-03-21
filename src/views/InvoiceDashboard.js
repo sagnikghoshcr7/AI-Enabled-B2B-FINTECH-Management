@@ -8,6 +8,7 @@ import InvoicePanelTable from './../components/InvoicePanelTable';
 // import DebounceAssignment from '../components/DebounceAssignment';
 // import PanelHeader from '../components/PanelHeader';
 import '../styles.css'
+import Footer from '../components/Footer';
 
 const useStyles = makeStyles({
     mainDashboard: {
@@ -30,6 +31,7 @@ const InvoiceDashboard = () => {
             {/* <PanelHeader/> */}
             {/* <DebounceAssignment/> */}
             {/* <InvoiceTable/> */}
+            <Footer />
             
         </div>
         

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import SearchIcon from "@material-ui/icons/Search";
+import NavigateNextIcon from "@material-ui/icons/NavigateNext";
+import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import {
   Grid,
   Button,
@@ -12,6 +13,10 @@ import {
   TableRow,
   Paper,
   Checkbox,
+  Menu,
+  MenuItem,
+  List,
+  ListItem,
 } from "@material-ui/core";
 
 import axios from "axios";
@@ -144,29 +149,52 @@ const useStyles = makeStyles((theme) => ({
 
 export default function InvoicePanelTable() {
   const classes = useStyles();
-  const [selected, setSelected] = React.useState([]);
-  const [search, setSearch] = React.useState("");
-  const [add, setAdd] = React.useState(false);
-  const [edit, setEdit] = React.useState(false);
-  const [remove, setRemove] = React.useState(false);
-  const [pageCount, setCount] = React.useState(1);
-  const [responseData, setResponseData] = React.useState([]);
-  const [isNext, isNextFunc] = React.useState(false);
+  const [selected, setSelected] = useState([]);
+  const [search, setSearch] = useState("");
+  const [add, setAdd] = useState(false);
+  const [edit, setEdit] = useState(false);
+  const [remove, setRemove] = useState(false);
+  const [pageCount, setCount] = useState(1);
+  const [responseData, setResponseData] = useState([]);
+  const [isNext, isNextFunc] = useState(false);
   const [rowData, setRowData] = useState([]);
+  const [anchorEl, setAnchorEl] = useState(null);
+  const [selectedRowIndex, setSelectedRowIndex] = useState(1);
+  const [rowOffset, SetRowOffset] = useState(0);
+  const [rowFirstCount, setRowFirstCount] = useState(0);
+
+  const rowCountOptions = [5, 10, 20];
+
+  const rowCountHandleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+
+  const handleMenuItemClick = (event, index) => {
+    setSelectedRowIndex(index);
+    displayData();
+    // console.log(selectedRowIndex);
+    // console.log(rowCountOptions[selectedRowIndex]);
+    setAnchorEl(null);
+  };
+
+  const rowCountHandleClose = () => {
+    setAnchorEl(null);
+  };
 
   const displayData = (e) => {
     var data = qs.stringify({
-      offset: "",
-      limit: "10",
+      offset: rowOffset,
+      limit: rowCountOptions[selectedRowIndex],
       order_by_column: "",
       sort_desc: "0",
       cust_number: "",
       business_year: "",
     });
+
     var config = {
       method: "post",
-      // url: 'localhost:8080/hrc/api/load',
-      url: "http://e01c-117-212-215-106.ngrok.io/Grey_Goose/api/load",
+      url: "http://localhost:8080/hrc/api/load",
+
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },
@@ -294,6 +322,24 @@ export default function InvoicePanelTable() {
 
   const isSelected = (invoiceId) => selected.indexOf(invoiceId) !== -1;
 
+  let goPreviousButton;
+
+  if (rowFirstCount !== 0) {
+    goPreviousButton = <NavigateBeforeIcon />;
+  }
+
+  const goPreviousRows = () => {
+    SetRowOffset(rowOffset - rowCountOptions[selectedRowIndex]);
+    setRowFirstCount(rowFirstCount - rowCountOptions[selectedRowIndex]);
+    displayData();
+  };
+
+  const goNextRows = () => {
+    SetRowOffset(rowOffset + rowCountOptions[selectedRowIndex]);
+    setRowFirstCount(rowFirstCount + rowCountOptions[selectedRowIndex]);
+    displayData();
+  };
+
   return (
     <div className={classes.main}>
       <Paper elevation={3} className={classes.paper}>
@@ -305,7 +351,7 @@ export default function InvoicePanelTable() {
             className={classes.header}
             variant="outlined "
           >
-            <Grid item xs={4} direction="row" style={{display: 'flex'}}>
+            <Grid item xs={4} direction="row" style={{ display: "flex" }}>
               <Button
                 classes={{ containedPrimary: classes.primary }}
                 style={{
@@ -468,6 +514,50 @@ export default function InvoicePanelTable() {
               </TableBody>
             </Table>
           </TableContainer>
+        </Grid>
+        <Grid
+          item
+          style={{
+            width: "90vw",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "flex-end",
+          }}
+        >
+          <Grid style={{ color: "#fff" }}>Rows per page</Grid>
+          <Grid style={{ backgroundColor: "#283A46", margin: "0 7px" }}>
+            <List component="nav" style={{ color: "#fff", paddingTop: "0", paddingBottom: "0" }}>
+              <ListItem button onClick={rowCountHandleClick}>
+                {rowCountOptions[selectedRowIndex]}
+              </ListItem>
+            </List>
+            <Menu
+              anchorEl={anchorEl}
+              keepMounted
+              open={Boolean(anchorEl)}
+              onClose={rowCountHandleClose}
+            >
+              {rowCountOptions.map((option, index) => (
+                <MenuItem
+                  key={option}
+                  selected={index === setSelectedRowIndex}
+                  onClick={(event) => handleMenuItemClick(event, index)}
+                >
+                  {option}
+                </MenuItem>
+              ))}
+            </Menu>
+          </Grid>
+          <Grid onClick={goPreviousRows} style={{ color: "#fff" }}>
+            {goPreviousButton}
+          </Grid>
+          <Grid style={{ color: "#fff" }}>
+            {rowFirstCount}-{rowFirstCount + rowCountOptions[selectedRowIndex]}{" "}
+            of 50000
+          </Grid>
+          <Grid onClick={goNextRows} style={{ color: "#fff" }}>
+            <NavigateNextIcon />
+          </Grid>
         </Grid>
       </Paper>
     </div>

@@ -160,8 +160,10 @@ export default function InvoicePanelTable() {
   const [rowData, setRowData] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRowIndex, setSelectedRowIndex] = useState(1);
+  const [tempSelectedRowIndex, setTempSelectedRowIndex] = useState(1);
   const [rowOffset, SetRowOffset] = useState(0);
   const [rowFirstCount, setRowFirstCount] = useState(0);
+  
 
   const rowCountOptions = [5, 10, 20];
 
@@ -169,9 +171,19 @@ export default function InvoicePanelTable() {
     setAnchorEl(event.currentTarget);
   };
 
+  useEffect(() => {
+    setSelectedRowIndex(tempSelectedRowIndex);
+    displayData();
+  }, [tempSelectedRowIndex]);
+
+  useEffect(() => {
+    displayData();
+  }, [rowOffset, rowFirstCount]);
+
   const handleMenuItemClick = (event, index) => {
     setSelectedRowIndex(index);
-    displayData();
+    setTempSelectedRowIndex(index);
+    // displayData();
     // console.log(selectedRowIndex);
     // console.log(rowCountOptions[selectedRowIndex]);
     setAnchorEl(null);
@@ -184,7 +196,7 @@ export default function InvoicePanelTable() {
   const displayData = (e) => {
     var data = qs.stringify({
       offset: rowOffset,
-      limit: rowCountOptions[selectedRowIndex],
+      limit: rowCountOptions[tempSelectedRowIndex],
       order_by_column: "",
       sort_desc: "0",
       cust_number: "",
@@ -237,6 +249,7 @@ export default function InvoicePanelTable() {
   useEffect(() => {
     displayData();
   }, []);
+
 
   React.useEffect(() => {
     handleLoad();
@@ -292,21 +305,22 @@ export default function InvoicePanelTable() {
   // for selecting all checkboxes
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      setSelected(responseData.map((row) => row.invoiceId));
+      setSelected(responseData.map((row) => row.sl_no));
       return;
     }
     setSelected([]);
   };
 
+  let newSelected = [];
+
   // for checkbox selection
-  const handleClick = (event, invoiceId) => {
-    const selectedIndex = selected.indexOf(invoiceId);
-    console.log(selectedIndex);
-    let newSelected = [];
+  const handleClick = (event, sl_no) => {
+    const selectedIndex = selected.indexOf(sl_no);
+    // console.log(selectedIndex);
 
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, invoiceId);
-      // console.log(invoiceId)
+      newSelected = newSelected.concat(selected, sl_no);
+      // console.log(sl_no)
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -318,9 +332,10 @@ export default function InvoicePanelTable() {
       );
     }
     setSelected(newSelected);
+    // console.log(newSelected[newSelected.length - 1]);
   };
 
-  const isSelected = (invoiceId) => selected.indexOf(invoiceId) !== -1;
+  const isSelected = (sl_no) => selected.indexOf(sl_no) !== -1;
 
   let goPreviousButton;
 
@@ -331,12 +346,16 @@ export default function InvoicePanelTable() {
   const goPreviousRows = () => {
     SetRowOffset(rowOffset - rowCountOptions[selectedRowIndex]);
     setRowFirstCount(rowFirstCount - rowCountOptions[selectedRowIndex]);
+    // SetRowOffset(rowOffset - rowCountOptions[tempSelectedRowIndex]);
+    // setRowFirstCount(rowFirstCount - rowCountOptions[tempSelectedRowIndex]);
     displayData();
   };
 
   const goNextRows = () => {
     SetRowOffset(rowOffset + rowCountOptions[selectedRowIndex]);
     setRowFirstCount(rowFirstCount + rowCountOptions[selectedRowIndex]);
+    // SetRowOffset(rowOffset + rowCountOptions[tempSelectedRowIndex]);
+    // setRowFirstCount(rowFirstCount + rowCountOptions[tempSelectedRowIndex]);
     displayData();
   };
 
@@ -404,7 +423,7 @@ export default function InvoicePanelTable() {
             </Grid>
             <Grid container item xs={5} justify="space-between">
               <AddFormDialog />
-              <EditDialogForm />
+              <EditDialogForm newSelected = {newSelected} />
               <DeleteDialogForm
                 selected={selected}
                 remove={remove}
@@ -526,7 +545,10 @@ export default function InvoicePanelTable() {
         >
           <Grid style={{ color: "#fff" }}>Rows per page</Grid>
           <Grid style={{ backgroundColor: "#283A46", margin: "0 7px" }}>
-            <List component="nav" style={{ color: "#fff", paddingTop: "0", paddingBottom: "0" }}>
+            <List
+              component="nav"
+              style={{ color: "#fff", paddingTop: "0", paddingBottom: "0" }}
+            >
               <ListItem button onClick={rowCountHandleClick}>
                 {rowCountOptions[selectedRowIndex]}
               </ListItem>
@@ -552,8 +574,8 @@ export default function InvoicePanelTable() {
             {goPreviousButton}
           </Grid>
           <Grid style={{ color: "#fff" }}>
-            {rowFirstCount}-{rowFirstCount + rowCountOptions[selectedRowIndex]}{" "}
-            of 50000
+            {rowFirstCount + 1}-
+            {rowFirstCount + rowCountOptions[selectedRowIndex]} of 50000
           </Grid>
           <Grid onClick={goNextRows} style={{ color: "#fff" }}>
             <NavigateNextIcon />

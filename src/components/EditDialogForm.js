@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
+import qs from "qs";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
@@ -127,11 +129,18 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions);
 
 export default function EditDialogForm(props) {
+  const {newSelected} = props;
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const [id, setId] = React.useState(props.selected);
+  const [open, setOpen] = useState(false);
+  const [id, setId] = useState(props.selected);
+  const [editInvoiceCurr, setEditInvoiceCurr] = useState("");
+  const [editcustPaymentTerms, setEditcustPaymentTerms] = useState("");
+
+
+
   const handleClickOpen = () => {
     setOpen(true);
+    console.log(newSelected);
   };
   const handleClose = () => {
     setOpen(false);
@@ -141,6 +150,34 @@ export default function EditDialogForm(props) {
   };
 
   const handleEdit = () => {};
+
+  useEffect(() => {
+    // console.log(newSelected);
+  },);
+
+  const editData = (e) => {
+    var data = qs.stringify({
+      sl_no: newSelected[newSelected.length - 1],
+      invoice_currency: editInvoiceCurr,
+      cust_payment_terms: editcustPaymentTerms,
+    });
+    var config = {
+      method: "post",
+      url: "http://localhost:8080/hrc/api/update",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   return (
     <div>

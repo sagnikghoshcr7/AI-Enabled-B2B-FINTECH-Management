@@ -1,4 +1,5 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import qs from "qs";
@@ -14,6 +15,7 @@ import EditIcon from "@material-ui/icons/Edit";
 import InputLabel from "@material-ui/core/InputLabel";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
+import { RowSelectContext } from "../contexts/RowSelectContext";
 
 const styles = (theme) => ({
   root: {
@@ -128,36 +130,30 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-export default function EditDialogForm(props) {
-  const {newSelected} = props;
+export default function EditDialogForm({ displayData }) {
+  const navigate = useNavigate();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-  const [id, setId] = useState(props.selected);
   const [editInvoiceCurr, setEditInvoiceCurr] = useState("");
   const [editcustPaymentTerms, setEditcustPaymentTerms] = useState("");
 
-
+  const { rowSelectArr } = useContext(RowSelectContext);
 
   const handleClickOpen = () => {
     setOpen(true);
-    console.log(newSelected);
   };
   const handleClose = () => {
     setOpen(false);
   };
-  const handleRemove = () => {
-    props.onChange(!props.remove);
-  };
 
-  const handleEdit = () => {};
-
-  useEffect(() => {
-    // console.log(newSelected);
-  },);
+  // useEffect(() => {
+  // console.log(newSelected);
+  // console.log(rowSelectArr[rowSelectArr.length - 1]);
+  // });
 
   const editData = (e) => {
     var data = qs.stringify({
-      sl_no: newSelected[newSelected.length - 1],
+      sl_no: rowSelectArr[rowSelectArr.length - 1],
       invoice_currency: editInvoiceCurr,
       cust_payment_terms: editcustPaymentTerms,
     });
@@ -173,6 +169,7 @@ export default function EditDialogForm(props) {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
+        displayData();
       })
       .catch(function (error) {
         console.log(error);
@@ -213,14 +210,18 @@ export default function EditDialogForm(props) {
                 className={classes.TextField}
                 type="text"
                 variant="outlined"
+                id="editInvoiceCurr"
+                onChange={(e) => setEditInvoiceCurr(e.target.value)}
               />
             </Grid>
             <Grid item>
               <TextField
                 label="Customer Payment Terms"
                 className={classes.TextField}
-                type="number"
+                type="text"
                 variant="outlined"
+                id="editcustPaymentTerms"
+                onChange={(e) => setEditcustPaymentTerms(e.target.value)}
               />
             </Grid>
           </Grid>
@@ -232,7 +233,11 @@ export default function EditDialogForm(props) {
             size="small"
             color="#273D49CC"
             className={classes.editButtons}
-            onClick={handleEdit}
+            onClick={(event) => {
+              event.preventDefault();
+              editData();
+              handleClose();
+            }}
             style={{
               color: "#FFFFFF",
               width: "47vw",

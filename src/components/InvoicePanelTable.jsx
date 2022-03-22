@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
@@ -35,6 +35,7 @@ import EditDialogForm from "./EditDialogForm";
 import { SERVER_URL, ROLL_NUMBER } from "../utils/constants";
 import { useCallback } from "react";
 import AdvanceSearch from "./AdvanceSearch";
+import { RowSelectContext } from "../contexts/RowSelectContext";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -163,7 +164,8 @@ export default function InvoicePanelTable() {
   const [tempSelectedRowIndex, setTempSelectedRowIndex] = useState(1);
   const [rowOffset, SetRowOffset] = useState(0);
   const [rowFirstCount, setRowFirstCount] = useState(0);
-  
+
+  const { setRowSelectArr } = useContext(RowSelectContext);
 
   const rowCountOptions = [5, 10, 20];
 
@@ -250,7 +252,6 @@ export default function InvoicePanelTable() {
     displayData();
   }, []);
 
-
   React.useEffect(() => {
     handleLoad();
   }, [handleLoad, pageCount]);
@@ -332,6 +333,7 @@ export default function InvoicePanelTable() {
       );
     }
     setSelected(newSelected);
+    setRowSelectArr(newSelected);
     // console.log(newSelected[newSelected.length - 1]);
   };
 
@@ -423,7 +425,7 @@ export default function InvoicePanelTable() {
             </Grid>
             <Grid container item xs={5} justify="space-between">
               <AddFormDialog />
-              <EditDialogForm newSelected = {newSelected} />
+              <EditDialogForm displayData={displayData} />
               <DeleteDialogForm
                 selected={selected}
                 remove={remove}

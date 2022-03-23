@@ -424,7 +424,7 @@ export default function InvoicePanelTable() {
               </Paper>
             </Grid>
             <Grid container item xs={5} justify="space-between">
-              <AddFormDialog />
+              <AddFormDialog displayData={displayData} />
               <EditDialogForm displayData={displayData} />
               <DeleteDialogForm displayData={displayData} />
             </Grid>

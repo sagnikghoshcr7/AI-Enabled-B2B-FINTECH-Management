@@ -1,5 +1,7 @@
-import React from "react";
+import React, { useContext, useEffect, useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
+import axios from "axios";
+import qs from "qs";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
@@ -8,8 +10,8 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import RemoveIcon from "@material-ui/icons/Remove";
 import { SERVER_URL, ROLL_NUMBER } from "../utils/constants";
+import { RowSelectContext } from "../contexts/RowSelectContext";
 
 const styles = (theme) => ({
   root: {
@@ -33,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
   deletemain: {
     marginLeft: theme.spacing(1),
     border: `1px solid ${theme.palette.secondary.main}`,
-    width: '10vw',
+    width: "10vw",
   },
   paper: {
     backgroundColor: theme.palette.primary.dark,
@@ -80,65 +82,53 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-export default function DeleteDialogForm(props) {
+export default function DeleteDialogForm({ displayData }) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const [id, setId] = React.useState(props.selected);
+  const [open, setOpen] = useState(false);
+
+  const { rowSelectArr } = useContext(RowSelectContext);
+
+  // useEffect(() => {
+  //   console.log(rowSelectArr);
+  // });
+
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
-  const handleRemove = () => {
-    props.onChange(!props.remove);
-  };
 
-  const handleDelete = () => {
-    const ids = props.selected;
-    console.log(ids);
-
-    const config = {
-      method: "POST",
-
-      body: JSON.stringify({
-        ids,
-      }),
+  const editData = (rowNo, e) => {
+    console.log(rowNo);
+    var data = qs.stringify({
+      sl_no: rowNo,
+    });
+    var config = {
+      method: "post",
+      url: "http://localhost:8080/hrc/api/delete",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      data: data,
     };
 
-    fetch(`${SERVER_URL}/${ROLL_NUMBER}/DeleteData/`, config)
-      .then((res) => res.json())
-      .then(({ message }) => {
-        if (message.length > 0) {
-          handleRemove();
-          handleClose();
-        }
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+        displayData();
+      })
+      .catch(function (error) {
+        console.log(error);
       });
+  };
 
-    // try{
-    //   const delData = async (ids)=>{
-    //     const response = await axios.post(`http://localhost:8081/1805096/DeleteData`,{ids});
-    //     console.log(response);
-    //   }
-    //   delData(ids);
-    // }catch(error){
-    //   console.log(error);
-    // }
+  function helperDelete(rowNo) {
+    editData(rowNo);
+  }
 
-    //   async function makePostRequest() {
-
-    //     let params = {
-    //         DocId:props.selected
-    //       }
-
-    //     let res = await axios.post('http://localhost:8081/1805096/DeleteData/', params);
-
-    //     console.log(res.data);
-    // }
-
-    // makePostRequest();
-    handleRemove();
-    handleClose();
+  const handleDelete = (e) => {
+    rowSelectArr.map((rowNo) => helperDelete(rowNo));
   };
 
   return (
@@ -195,7 +185,11 @@ export default function DeleteDialogForm(props) {
             size="small"
             color="#273D49CC"
             className={classes.deleteButtons}
-            onClick={handleDelete}
+            onClick={(event) => {
+              event.preventDefault();
+              handleDelete();
+              handleClose();
+            }}
             style={{
               color: "#FFFFFF",
               width: "47vw",

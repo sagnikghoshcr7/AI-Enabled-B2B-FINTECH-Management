@@ -426,11 +426,7 @@ export default function InvoicePanelTable() {
             <Grid container item xs={5} justify="space-between">
               <AddFormDialog />
               <EditDialogForm displayData={displayData} />
-              <DeleteDialogForm
-                selected={selected}
-                remove={remove}
-                onChange={handleRemove}
-              />
+              <DeleteDialogForm displayData={displayData} />
             </Grid>
           </Grid>
         </Grid>

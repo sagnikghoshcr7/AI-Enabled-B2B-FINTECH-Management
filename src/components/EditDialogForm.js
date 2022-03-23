@@ -1,5 +1,4 @@
 import React, { useContext, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import qs from "qs";
@@ -131,7 +130,6 @@ const DialogActions = withStyles((theme) => ({
 }))(MuiDialogActions);
 
 export default function EditDialogForm({ displayData }) {
-  const navigate = useNavigate();
   const classes = useStyles();
   const [open, setOpen] = useState(false);
   const [editInvoiceCurr, setEditInvoiceCurr] = useState("");

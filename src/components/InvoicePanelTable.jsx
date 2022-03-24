@@ -199,10 +199,7 @@ export default function InvoicePanelTable() {
     var data = qs.stringify({
       offset: rowOffset,
       limit: rowCountOptions[tempSelectedRowIndex],
-      order_by_column: "",
       sort_desc: "0",
-      cust_number: "",
-      business_year: "",
     });
 
     var config = {

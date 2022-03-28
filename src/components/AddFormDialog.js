@@ -13,6 +13,7 @@ import Typography from "@material-ui/core/Typography";
 import InputLabel from "@material-ui/core/InputLabel";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
+import { SERVER_URL } from "../utils/constants";
 
 const styles = (theme) => ({
   root: {
@@ -187,7 +188,7 @@ export default function EditDialogForm({ displayData }) {
     });
     var config = {
       method: "post",
-      url: "http://localhost:8080/hrc/api/add",
+      url: SERVER_URL + "hrc/api/add",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },

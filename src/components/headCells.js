@@ -83,4 +83,11 @@ export const headCells = [
     disablePadding: false,
     label: "Business Create Date",
   },
+  {
+    id: "  cust_payment_terms",
+    numeric: false,
+    disablePadding: false,
+    label: "Customer Payment Terms",
+  },
+  
 ];

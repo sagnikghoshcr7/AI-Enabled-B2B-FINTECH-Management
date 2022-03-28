@@ -15,6 +15,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import { RowSelectContext } from "../contexts/RowSelectContext";
+import { SERVER_URL } from "../utils/constants";
 
 const styles = (theme) => ({
   root: {
@@ -157,7 +158,7 @@ export default function EditDialogForm({ displayData }) {
     });
     var config = {
       method: "post",
-      url: "http://localhost:8080/hrc/api/update",
+      url: SERVER_URL + "hrc/api/update",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },

@@ -1,7 +1,5 @@
-import React, { useContext, useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
-import axios from "axios";
-import qs from "qs";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
 import MuiDialogTitle from "@material-ui/core/DialogTitle";
@@ -10,8 +8,10 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import { SERVER_URL, ROLL_NUMBER } from "../utils/constants";
-import { RowSelectContext } from "../contexts/RowSelectContext";
+import EditIcon from "@material-ui/icons/Edit";
+import InputLabel from "@material-ui/core/InputLabel";
+import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
 
 const styles = (theme) => ({
   root: {
@@ -27,15 +27,10 @@ const styles = (theme) => ({
 });
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    width: 540,
-    height: 500,
-    margin: "auto",
-  },
-  deletemain: {
-    marginLeft: theme.spacing(1),
-    border: `1px solid ${theme.palette.secondary.main}`,
-    width: "10vw",
+  edit_main_btn: {
+    // marginLeft: theme.spacing(1),
+    // border: "1px solid #222",
+    // width: "10vw",
   },
   paper: {
     backgroundColor: theme.palette.primary.dark,
@@ -43,11 +38,60 @@ const useStyles = makeStyles((theme) => ({
   colorTextPrimary: {
     color: "white",
   },
-  deleteButtons: {
+  reset_btn: {
     marginLeft: theme.spacing(1),
     border: `1px solid ${theme.palette.secondary.main}`,
     color: "white",
     background: "#273D49CC",
+  },
+  save_btn: {
+    marginRight: theme.spacing(1),
+    color: "white",
+  },
+  cancel_btn: {
+    color: theme.palette.secondary.light,
+    marginRight: "12vw",
+  },
+  root: {
+    // maxWidth: 500,
+    height: 500,
+    margin: "auto",
+  },
+  TextField: {
+    width: 250,
+    height: 50,
+    color: "white",
+    padding: "0px 0px",
+    fontSize: "1rem",
+    // border: "1px solid #356680",
+    borderRadius: "10px",
+    opacity: "1",
+    backgroundColor: "#fff",
+    borderColor: "#356680",
+  },
+  label: {
+    color: "#97A1A9",
+  },
+  analyticsButtons: {
+    marginLeft: theme.spacing(1),
+    border: `1px solid ${theme.palette.secondary.main}`,
+    color: "white",
+    background: "#273D49CC",
+  },
+  root: {
+    "& .MuiOutlinedInput-input": {
+      padding: "16px 0px",
+    },
+    "& .MuiInputBase-input": {
+      // color: "white",
+      paddingLeft: "5px",
+    },
+    "& .MuiDialog-paperWidthSm": {
+      width: "90vw",
+    },
+    "& .MuiInputLabel-outlined.MuiInputLabel-shrink": {
+      paddingTop: "10px",
+    },
   },
 }));
 
@@ -82,15 +126,9 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-export default function DeleteDialogForm({ displayData }) {
+export default function AnalyticsView({ displayData, setAdvSearchParams }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
-
-  const { rowSelectArr } = useContext(RowSelectContext);
-
-  // useEffect(() => {
-  //   console.log(rowSelectArr);
-  // });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -99,48 +137,22 @@ export default function DeleteDialogForm({ displayData }) {
     setOpen(false);
   };
 
-  const editData = (rowNo, e) => {
-    console.log(rowNo);
-    var data = qs.stringify({
-      sl_no: rowNo,
-    });
-    var config = {
-      method: "post",
-      url: SERVER_URL + "hrc/api/delete",
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-      data: data,
-    };
-
-    axios(config)
-      .then(function (response) {
-        console.log(JSON.stringify(response.data));
-        displayData();
-      })
-      .catch(function (error) {
-        console.log(error);
-      });
-  };
-
-  function helperDelete(rowNo) {
-    editData(rowNo);
-  }
-
-  const handleDelete = (e) => {
-    rowSelectArr.map((rowNo) => helperDelete(rowNo));
-  };
 
   return (
     <div>
       <Button
         variant="outlined"
+        onClick={handleClickOpen}
         color="primary"
         size="small"
-        className={classes.deletemain}
-        onClick={handleClickOpen}
+        style={{
+          borderColor: "#15AEF2",
+          borderWidth: "1px",
+          borderRadius: "0",
+          height: "5vh",
+        }}
       >
-        Delete
+        Analytics View
       </Button>
 
       <Dialog
@@ -151,16 +163,21 @@ export default function DeleteDialogForm({ displayData }) {
           paper: classes.paper,
           root: classes.root,
         }}
+        style={{}}
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           <Typography variant="h6" style={{ color: "#FFFFFF" }}>
-            Delete record[s] ?
+            Analytics View
           </Typography>
         </DialogTitle>
         <DialogContent dividers>
-          <Typography gutterBottom variant="body2" style={{ color: "#C0C6CA" }}>
-            Are you sure you want to delete these records ?
-          </Typography>
+          <Grid container spacing={4} direction="row">
+            <Grid item>
+              
+
+
+            </Grid>
+          </Grid>
         </DialogContent>
         <DialogActions>
           <Button
@@ -168,28 +185,7 @@ export default function DeleteDialogForm({ displayData }) {
             color="#273D49CC"
             size="small"
             onClick={handleClose}
-            className={classes.deleteButtons}
-            style={{
-              color: "#FFFFFF",
-              margin: "0 10px 0 0",
-              width: "47vw",
-              borderBlockColor: "#14AFF1",
-              borderColor: "#fff",
-            }}
-          >
-            Cancel
-          </Button>
-          <Button
-            classes={{ containedPrimary: classes.primary }}
-            variant="contained"
-            size="small"
-            color="#273D49CC"
-            className={classes.deleteButtons}
-            onClick={(event) => {
-              event.preventDefault();
-              handleDelete();
-              handleClose();
-            }}
+            className={classes.analyticsButtons}
             style={{
               color: "#FFFFFF",
               width: "47vw",
@@ -197,7 +193,7 @@ export default function DeleteDialogForm({ displayData }) {
               borderColor: "#fff",
             }}
           >
-            Delete
+            Close
           </Button>
         </DialogActions>
       </Dialog>

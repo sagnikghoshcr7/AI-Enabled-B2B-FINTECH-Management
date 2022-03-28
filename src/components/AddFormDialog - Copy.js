@@ -19,6 +19,7 @@ import InputLabel from "@material-ui/core/InputLabel";
 import InputBase from "@material-ui/core/InputBase";
 import { Fragment, useState } from "react";
 import Grid from "@material-ui/core/Grid";
+import { SERVER_URL } from "../utils/constants";
 
 const useStyle = makeStyles((theme) => ({
   add: {
@@ -152,7 +153,7 @@ export default function AddFormDialog({ displayData }) {
     });
     var config = {
       method: "post",
-      url: "localhost:8080/Grey_Goose/api/add",
+      url: SERVER_URL + "hrc/api/add",
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
       },

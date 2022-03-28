@@ -36,6 +36,7 @@ import { SERVER_URL, ROLL_NUMBER } from "../utils/constants";
 import { useCallback } from "react";
 import AdvanceSearch from "./AdvanceSearch";
 import { RowSelectContext } from "../contexts/RowSelectContext";
+import AnalyticsView from "./AnalyticsView";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -164,6 +165,11 @@ export default function InvoicePanelTable() {
   const [tempSelectedRowIndex, setTempSelectedRowIndex] = useState(1);
   const [rowOffset, SetRowOffset] = useState(0);
   const [rowFirstCount, setRowFirstCount] = useState(0);
+  const [rowCustNo, setRowCustNo] = useState("");
+  const [advSearchParams, setAdvSearchParams] = useState(["", "", "", ""]);
+  const [advDocumentId, setAdvDocumentId] = useState("");
+  const [advInvoiceId, setAdvInvoiceId] = useState("");
+  const [advBusinessYear, setAdvBusinessYear] = useState("");
 
   const { setRowSelectArr } = useContext(RowSelectContext);
 
@@ -181,6 +187,21 @@ export default function InvoicePanelTable() {
   useEffect(() => {
     displayData();
   }, [rowOffset, rowFirstCount]);
+
+  useEffect(() => {
+    // console.log("value -> ", advSearchParams);
+    setAdvDocumentId(advSearchParams[0]);
+    setAdvInvoiceId(advSearchParams[1]);
+    setRowCustNo(advSearchParams[2]);
+    setAdvBusinessYear(advSearchParams[3]);
+    displayData();
+  }, [
+    advSearchParams,
+    advDocumentId,
+    advInvoiceId,
+    advBusinessYear,
+    rowCustNo,
+  ]);
 
   const handleMenuItemClick = (event, index) => {
     setSelectedRowIndex(index);
@@ -200,11 +221,16 @@ export default function InvoicePanelTable() {
       offset: rowOffset,
       limit: rowCountOptions[tempSelectedRowIndex],
       sort_desc: "0",
+      doc_id: advDocumentId,
+      invoice_id: advInvoiceId,
+      cust_number: rowCustNo,
+      business_year: advBusinessYear,
     });
 
     var config = {
       method: "post",
-      url: "http://localhost:8080/hrc/api/load",
+      // url: SERVER_URL + "hrc/api/load",
+      // url: "http://9982-103-2-132-50.ngrok.io/hrc/api/load",
 
       headers: {
         "Content-Type": "application/x-www-form-urlencoded",
@@ -249,9 +275,9 @@ export default function InvoicePanelTable() {
     displayData();
   }, []);
 
-  React.useEffect(() => {
-    handleLoad();
-  }, [handleLoad, pageCount]);
+  // React.useEffect(() => {
+  //   handleLoad();
+  // }, [handleLoad, pageCount]);
 
   // const handleAdd = () => {
   //   setAdd(!add);
@@ -383,20 +409,13 @@ export default function InvoicePanelTable() {
               >
                 Predict
               </Button>
-              <Button
-                variant="outlined"
-                color="primary"
-                size="small"
-                style={{
-                  borderColor: "#15AEF2",
-                  borderWidth: "1px 0 1px 0",
-                  borderRadius: "0",
-                  width: "10vw",
-                }}
-              >
-                Analytics View
-              </Button>
-              <AdvanceSearch />
+              <AnalyticsView />
+              <AdvanceSearch
+                displayData={displayData}
+                setAdvSearchParams={(advSearchPropsArray) =>
+                  setAdvSearchParams(advSearchPropsArray)
+                }
+              />
             </Grid>
             <Grid
               item
@@ -416,7 +435,10 @@ export default function InvoicePanelTable() {
                     "aria-label": "Search by Invoice Number",
                     size: "small",
                   }}
-                  onChange={optimisedSearch}
+                  onChange={(e) => {
+                    setRowCustNo(e.target.value);
+                    displayData();
+                  }}
                 />
               </Paper>
             </Grid>
@@ -450,8 +472,10 @@ export default function InvoicePanelTable() {
                   {headCells.map((headCell, index) => (
                     <TableCell
                       key={headCell.id}
-                      align={headCell.numeric ? "right" : "left"}
-                      padding={headCell.disablePadding ? "none" : "default"}
+                      // align={headCell.numeric ? "right" : "left"}
+                      // padding={headCell.disablePadding ? "none" : "default"}
+                      // style={{width: '6vw'}}
+                      padding={"none"}
                     >
                       {headCell.label}
                     </TableCell>
@@ -521,6 +545,9 @@ export default function InvoicePanelTable() {
                         {typeof row.document_create_date == "object"
                           ? `${row.document_create_date.year}-${row.document_create_date.month}-${row.document_create_date.day}`
                           : "-"}
+                      </TableCell>
+                      <TableCell align="left">
+                        {row.cust_payment_terms}
                       </TableCell>
                     </TableRow>
                   );

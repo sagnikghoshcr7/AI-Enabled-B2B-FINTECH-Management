@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -126,21 +126,41 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-export default function AdvanceSearch(props) {
+export default function AdvanceSearch({ displayData, setAdvSearchParams }) {
   const classes = useStyles();
-  const [open, setOpen] = React.useState(false);
-  const [id, setId] = React.useState(props.selected);
+  const [open, setOpen] = useState(false);
+  // const [id, setId] = React.useState(props.selected);
+  const [srchDocumentId, setSrchDocumentId] = useState("");
+  const [srchInvoiceId, setSrchInvoiceId] = useState("");
+  const [srchCustomerNo, setSrchCustomerNo] = useState("");
+  const [srchBusinessYear, setSrchBusinessYear] = useState("");
+
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
-  const handleRemove = () => {
-    props.onChange(!props.remove);
-  };
+  // const handleRemove = () => {
+  //   props.onChange(!props.remove);
+  // };
 
-  const handleEdit = () => {};
+  // useEffect(() => {
+  //   setAdvSearchParams([1, 4, 7])
+  // },[])
+
+  const handleEdit = () => {
+    var advTempData = [];
+    advTempData.push(srchDocumentId);
+    advTempData.push(srchInvoiceId);
+    advTempData.push(srchCustomerNo);
+    advTempData.push(srchBusinessYear);
+    setAdvSearchParams(advTempData);
+    // setTimeout(function () {
+    //   displayData();
+    // }, 500)
+    displayData();
+  };
 
   return (
     <div>
@@ -153,7 +173,7 @@ export default function AdvanceSearch(props) {
           borderColor: "#15AEF2",
           borderWidth: "1px",
           borderRadius: "0 4px 4px 0",
-          height: '5vh'
+          height: "5vh",
         }}
       >
         Advance Search
@@ -181,6 +201,8 @@ export default function AdvanceSearch(props) {
                 className={classes.TextField}
                 type="number"
                 variant="outlined"
+                id="srchDocumentId"
+                onChange={(e) => setSrchDocumentId(e.target.value)}
               />
             </Grid>
             <Grid item>
@@ -189,6 +211,8 @@ export default function AdvanceSearch(props) {
                 className={classes.TextField}
                 type="number"
                 variant="outlined"
+                id="srchInvoiceId"
+                onChange={(e) => setSrchInvoiceId(e.target.value)}
               />
             </Grid>
             <Grid item>
@@ -197,6 +221,8 @@ export default function AdvanceSearch(props) {
                 className={classes.TextField}
                 type="number"
                 variant="outlined"
+                id="srchCustomerNo"
+                onChange={(e) => setSrchCustomerNo(e.target.value)}
               />
             </Grid>
             <Grid item>
@@ -205,6 +231,8 @@ export default function AdvanceSearch(props) {
                 className={classes.TextField}
                 type="number"
                 variant="outlined"
+                id="srchBusinessYear"
+                onChange={(e) => setSrchBusinessYear(e.target.value)}
               />
             </Grid>
           </Grid>
@@ -216,7 +244,12 @@ export default function AdvanceSearch(props) {
             size="small"
             color="#273D49CC"
             className={classes.editButtons}
-            onClick={handleEdit}
+            onClick={(event) => {
+              event.preventDefault();
+              handleEdit();
+              // displayData();
+              handleClose();
+            }}
             style={{
               color: "#FFFFFF",
               width: "47vw",

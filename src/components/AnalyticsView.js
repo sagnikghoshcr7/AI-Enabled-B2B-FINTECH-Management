@@ -11,7 +11,12 @@ import Typography from "@material-ui/core/Typography";
 import EditIcon from "@material-ui/icons/Edit";
 import InputLabel from "@material-ui/core/InputLabel";
 import Grid from "@material-ui/core/Grid";
-import TextField from "@material-ui/core/TextField";
+import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import { Bar, Pie } from "react-chartjs-2";
+import axios from "axios";
+import { SERVER_URL } from "../utils/constants";
+
+ChartJS.register(ArcElement, Tooltip, Legend);
 
 const styles = (theme) => ({
   root: {
@@ -129,6 +134,9 @@ const DialogActions = withStyles((theme) => ({
 export default function AnalyticsView({ displayData, setAdvSearchParams }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
+  // const [piekeysArray, setPiekeysArray] = useState([]);
+  // const [pieValuesArray, setPieValuesArray] = useState([]);
+  const [pieChartData, setPieChartData] = useState({});
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -137,6 +145,47 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
     setOpen(false);
   };
 
+  useEffect(() => {
+    getPieChartData();
+  }, []);
+
+  const getPieChartData = (e) => {
+    var config = {
+      method: "get",
+      url: SERVER_URL + "hrc/api/PieChart",
+      headers: {},
+    };
+
+    axios(config)
+      .then(function (response) {
+        // console.log(JSON.stringify(response.data));
+        // console.log(Object.keys(response.data));
+        // console.log(Object.values(response.data));
+        setPieChartData({
+          labels: Object.keys(response.data),
+          datasets: [
+            {
+              label: "Currency Pie Chart",
+              data: Object.values(response.data),
+              backgroundColor: [
+                "rgba(255, 99, 132, 0.4)",
+                "rgba(54, 162, 235, 0.4)",
+                "rgba(75, 192, 192, 0.4)",
+              ],
+              borderColor: [
+                "rgba(255, 99, 132, 1)",
+                "rgba(54, 162, 235, 1)",
+                "rgba(75, 192, 192, 1)",
+              ],
+              borderWidth: 1,
+            },
+          ],
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   return (
     <div>
@@ -171,11 +220,11 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
           </Typography>
         </DialogTitle>
         <DialogContent dividers>
-          <Grid container spacing={4} direction="row">
+          <Grid container style={{display: 'flex', justifyContent: 'center'}}>
             <Grid item>
-              
-
-
+              <Pie
+                data={pieChartData}
+              />
             </Grid>
           </Grid>
         </DialogContent>
@@ -188,7 +237,7 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
             className={classes.analyticsButtons}
             style={{
               color: "#FFFFFF",
-              width: "47vw",
+              width: "60vw",
               borderBlockColor: "#14AFF1",
               borderColor: "#fff",
             }}

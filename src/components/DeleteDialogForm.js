@@ -82,7 +82,7 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
-export default function DeleteDialogForm({ displayData }) {
+export default function DeleteDialogForm({ displayData, countTotalData }) {
   const classes = useStyles();
   const [open, setOpen] = useState(false);
 
@@ -117,6 +117,7 @@ export default function DeleteDialogForm({ displayData }) {
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         displayData();
+        countTotalData();
       })
       .catch(function (error) {
         console.log(error);

@@ -159,6 +159,7 @@ export default function InvoicePanelTable() {
   const [pageCount, setCount] = useState(1);
   const [responseData, setResponseData] = useState([]);
   const [isNext, isNextFunc] = useState(false);
+  const [toatalDataCount, setToatalDataCount] = useState(0);
   const [rowData, setRowData] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
   const [selectedRowIndex, setSelectedRowIndex] = useState(1);
@@ -229,7 +230,7 @@ export default function InvoicePanelTable() {
 
     var config = {
       method: "post",
-      // url: SERVER_URL + "hrc/api/load",
+      url: SERVER_URL + "hrc/api/load",
       // url: "http://9982-103-2-132-50.ngrok.io/hrc/api/load",
 
       headers: {
@@ -243,7 +244,25 @@ export default function InvoicePanelTable() {
         // console.log(JSON.stringify(response.data));
         const rowData = response.data["data"];
         setRowData(rowData);
-        console.log(rowData);
+        // console.log(rowData);
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
+  const countTotalData = (e) => {
+    var config = {
+      method: "post",
+      url: SERVER_URL + "hrc/api/CountServlet",
+      headers: {},
+    };
+
+    axios(config)
+      .then(function (response) {
+        // console.log(JSON.stringify(response.data));
+        const toatalDataCount = response.data;
+        setToatalDataCount(toatalDataCount);
       })
       .catch(function (error) {
         console.log(error);
@@ -273,6 +292,7 @@ export default function InvoicePanelTable() {
 
   useEffect(() => {
     displayData();
+    countTotalData();
   }, []);
 
   // React.useEffect(() => {
@@ -445,7 +465,7 @@ export default function InvoicePanelTable() {
             <Grid container item xs={5} justify="space-between">
               <AddFormDialog displayData={displayData} />
               <EditDialogForm displayData={displayData} />
-              <DeleteDialogForm displayData={displayData} />
+              <DeleteDialogForm displayData={displayData} countTotalData={countTotalData} />
             </Grid>
           </Grid>
         </Grid>
@@ -597,7 +617,7 @@ export default function InvoicePanelTable() {
           </Grid>
           <Grid style={{ color: "#fff" }}>
             {rowFirstCount + 1}-
-            {rowFirstCount + rowCountOptions[selectedRowIndex]} of 50000
+            {rowFirstCount + rowCountOptions[selectedRowIndex]} of {toatalDataCount}
           </Grid>
           <Grid onClick={goNextRows} style={{ color: "#fff" }}>
             <NavigateNextIcon />

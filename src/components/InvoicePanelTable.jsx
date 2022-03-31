@@ -27,7 +27,7 @@ import { CircularProgress } from "@material-ui/core";
 import "../styles.css";
 
 import InputBase from "@material-ui/core/InputBase";
-import IconButton from "@material-ui/core/IconButton";
+import RefreshIcon from "@material-ui/icons/Refresh";
 
 import DeleteDialogForm from "./DeleteDialogForm";
 import AddFormDialog from "./AddFormDialog";
@@ -244,7 +244,7 @@ export default function InvoicePanelTable() {
         // console.log(JSON.stringify(response.data));
         const rowData = response.data["data"];
         setRowData(rowData);
-        // console.log(rowData);
+        console.log(rowData);
       })
       .catch(function (error) {
         console.log(error);
@@ -346,6 +346,17 @@ export default function InvoicePanelTable() {
 
   const optimisedSearch = useCallback(debounce(handleSearch), []);
 
+  const refreshButtonClick = (event) => {
+    SetRowOffset(0);
+    setTempSelectedRowIndex(1);
+    setAdvDocumentId("");
+    setAdvInvoiceId("");
+    setRowCustNo("");
+    setAdvBusinessYear("");
+    setRowFirstCount(0);
+    displayData();
+  };
+
   // for selecting all checkboxes
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
@@ -443,6 +454,16 @@ export default function InvoicePanelTable() {
               direction="row"
               style={{ display: "flex", justifyContent: "center" }}
             >
+              <RefreshIcon
+                onClick={refreshButtonClick}
+                style={{
+                  color: "#15AEF2",
+                  fontSize: "31",
+                  padding: "1px 7px",
+                  border: "1px solid",
+                  borderRadius: "5px",
+                }}
+              />
               <Paper
                 component="form"
                 className={classes.searchpaper}
@@ -465,7 +486,10 @@ export default function InvoicePanelTable() {
             <Grid container item xs={5} justify="space-between">
               <AddFormDialog displayData={displayData} />
               <EditDialogForm displayData={displayData} />
-              <DeleteDialogForm displayData={displayData} countTotalData={countTotalData} />
+              <DeleteDialogForm
+                displayData={displayData}
+                countTotalData={countTotalData}
+              />
             </Grid>
           </Grid>
         </Grid>
@@ -617,7 +641,8 @@ export default function InvoicePanelTable() {
           </Grid>
           <Grid style={{ color: "#fff" }}>
             {rowFirstCount + 1}-
-            {rowFirstCount + rowCountOptions[selectedRowIndex]} of {toatalDataCount}
+            {rowFirstCount + rowCountOptions[selectedRowIndex]} of{" "}
+            {toatalDataCount}
           </Grid>
           <Grid onClick={goNextRows} style={{ color: "#fff" }}>
             <NavigateNextIcon />

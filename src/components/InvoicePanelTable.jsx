@@ -28,6 +28,7 @@ import "../styles.css";
 
 import InputBase from "@material-ui/core/InputBase";
 import RefreshIcon from "@material-ui/icons/Refresh";
+import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 
 import DeleteDialogForm from "./DeleteDialogForm";
 import AddFormDialog from "./AddFormDialog";
@@ -118,6 +119,9 @@ const useStyles = makeStyles((theme) => ({
   },
 
   /* Panel Header */
+  tablecellbutton: {
+    cursor: "pointer",
+  },
   header: {
     padding: "30px 30px",
   },
@@ -167,10 +171,12 @@ export default function InvoicePanelTable() {
   const [rowOffset, SetRowOffset] = useState(0);
   const [rowFirstCount, setRowFirstCount] = useState(0);
   const [rowCustNo, setRowCustNo] = useState("");
+  const [viewCircularProgress, setViewCircularProgress] = useState(true);
   const [advSearchParams, setAdvSearchParams] = useState(["", "", "", ""]);
   const [advDocumentId, setAdvDocumentId] = useState("");
   const [advInvoiceId, setAdvInvoiceId] = useState("");
   const [advBusinessYear, setAdvBusinessYear] = useState("");
+  const [addOrderByColumn, setAddOrderByColumn] = useState("");
 
   const { setRowSelectArr } = useContext(RowSelectContext);
 
@@ -221,6 +227,7 @@ export default function InvoicePanelTable() {
     var data = qs.stringify({
       offset: rowOffset,
       limit: rowCountOptions[tempSelectedRowIndex],
+      order_by_column: addOrderByColumn,
       sort_desc: "0",
       doc_id: advDocumentId,
       invoice_id: advInvoiceId,
@@ -244,7 +251,8 @@ export default function InvoicePanelTable() {
         // console.log(JSON.stringify(response.data));
         const rowData = response.data["data"];
         setRowData(rowData);
-        console.log(rowData);
+        setViewCircularProgress(false);
+        // console.log(rowData);
       })
       .catch(function (error) {
         console.log(error);
@@ -399,6 +407,27 @@ export default function InvoicePanelTable() {
     goPreviousButton = <NavigateBeforeIcon />;
   }
 
+  let dataloaderCircularProgress;
+
+  if (viewCircularProgress === true) {
+    dataloaderCircularProgress = (
+      <div style={{
+        width: '90vw',
+        display: 'flex',
+        flexDirection: 'column',
+        justifyContent: 'center',
+        alignItems: 'center',
+        padding: '6vh 0'
+      }}>
+        <CircularProgress
+          disableShrink
+          color="secondary"
+        />
+        <h6 style={{ color: "#C0C6CA", padding: '1vw 0 0 0' }}>Loading</h6>
+      </div>
+    );
+  }
+
   const goPreviousRows = () => {
     SetRowOffset(rowOffset - rowCountOptions[selectedRowIndex]);
     setRowFirstCount(rowFirstCount - rowCountOptions[selectedRowIndex]);
@@ -519,9 +548,21 @@ export default function InvoicePanelTable() {
                       // align={headCell.numeric ? "right" : "left"}
                       // padding={headCell.disablePadding ? "none" : "default"}
                       // style={{width: '6vw'}}
+                      className={classes.tablecellbutton}
+                      style={{ fontSize: "0.6rem" }}
                       padding={"none"}
+                      onClick={(event) => {
+                        setAddOrderByColumn(headCell.id);
+                        displayData();
+                      }}
                     >
                       {headCell.label}
+                      <UnfoldMoreIcon
+                        style={{
+                          color: "#fff",
+                          fontSize: "10",
+                        }}
+                      />
                     </TableCell>
                   ))}
                 </TableRow>
@@ -596,8 +637,11 @@ export default function InvoicePanelTable() {
                     </TableRow>
                   );
                 })}
-              </TableBody>
-            </Table>
+                </TableBody>
+                </Table>
+                <Grid>
+                  {dataloaderCircularProgress}
+                </Grid>
           </TableContainer>
         </Grid>
         <Grid
@@ -652,19 +696,3 @@ export default function InvoicePanelTable() {
     </div>
   );
 }
-
-// <div
-//               style={{
-//                 height: "50%",
-//                 paddingLeft: "50%",
-//                 overflow: "hidden",
-//                 paddingTop: "10px",
-//               }}
-//             >
-//               <CircularProgress
-//                 disableShrink
-//                 color="secondary"
-//                 className={classes.circularprogess}
-//               />
-//               <h6 style={{ color: "#C0C6CA" }}>Loading</h6>
-//             </div>

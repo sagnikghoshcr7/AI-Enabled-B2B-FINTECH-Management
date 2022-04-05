@@ -169,6 +169,7 @@ export default function InvoicePanelTable() {
   const [selectedRowIndex, setSelectedRowIndex] = useState(1);
   const [tempSelectedRowIndex, setTempSelectedRowIndex] = useState(1);
   const [rowOffset, SetRowOffset] = useState(0);
+  const [rowSortDesc, setRowSortDesc] = useState(0);
   const [rowFirstCount, setRowFirstCount] = useState(0);
   const [rowCustNo, setRowCustNo] = useState("");
   const [viewCircularProgress, setViewCircularProgress] = useState(true);
@@ -228,7 +229,7 @@ export default function InvoicePanelTable() {
       offset: rowOffset,
       limit: rowCountOptions[tempSelectedRowIndex],
       order_by_column: addOrderByColumn,
-      sort_desc: "0",
+      sort_desc: rowSortDesc,
       doc_id: advDocumentId,
       invoice_id: advInvoiceId,
       cust_number: rowCustNo,
@@ -368,7 +369,10 @@ export default function InvoicePanelTable() {
   // for selecting all checkboxes
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      setSelected(responseData.map((row) => row.sl_no));
+      setSelected(rowData.map((row) => row.sl_no));
+      setRowSelectArr(rowData.map((row) => row.sl_no))
+      // console.log(selected);
+      // console.log(rowData.map((row) => row.sl_no));
       return;
     }
     setSelected([]);
@@ -411,19 +415,18 @@ export default function InvoicePanelTable() {
 
   if (viewCircularProgress === true) {
     dataloaderCircularProgress = (
-      <div style={{
-        width: '90vw',
-        display: 'flex',
-        flexDirection: 'column',
-        justifyContent: 'center',
-        alignItems: 'center',
-        padding: '6vh 0'
-      }}>
-        <CircularProgress
-          disableShrink
-          color="secondary"
-        />
-        <h6 style={{ color: "#C0C6CA", padding: '1vw 0 0 0' }}>Loading</h6>
+      <div
+        style={{
+          width: "90vw",
+          display: "flex",
+          flexDirection: "column",
+          justifyContent: "center",
+          alignItems: "center",
+          padding: "6vh 0",
+        }}
+      >
+        <CircularProgress disableShrink color="secondary" />
+        <h6 style={{ color: "#C0C6CA", padding: "1vw 0 0 0" }}>Loading</h6>
       </div>
     );
   }
@@ -553,6 +556,12 @@ export default function InvoicePanelTable() {
                       padding={"none"}
                       onClick={(event) => {
                         setAddOrderByColumn(headCell.id);
+                        if (rowSortDesc === 0) {
+                          setRowSortDesc(1);
+                        }
+                        if (rowSortDesc === 1) {
+                          setRowSortDesc(0);
+                        }
                         displayData();
                       }}
                     >
@@ -637,11 +646,9 @@ export default function InvoicePanelTable() {
                     </TableRow>
                   );
                 })}
-                </TableBody>
-                </Table>
-                <Grid>
-                  {dataloaderCircularProgress}
-                </Grid>
+              </TableBody>
+            </Table>
+            <Grid>{dataloaderCircularProgress}</Grid>
           </TableContainer>
         </Grid>
         <Grid
@@ -696,3 +703,4 @@ export default function InvoicePanelTable() {
     </div>
   );
 }
+

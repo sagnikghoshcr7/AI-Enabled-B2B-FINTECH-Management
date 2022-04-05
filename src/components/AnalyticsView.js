@@ -11,6 +11,7 @@ import Typography from "@material-ui/core/Typography";
 import EditIcon from "@material-ui/icons/Edit";
 import InputLabel from "@material-ui/core/InputLabel";
 import Grid from "@material-ui/core/Grid";
+import TextField from "@material-ui/core/TextField";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import { Bar, Pie } from "react-chartjs-2";
 import axios from "axios";
@@ -73,6 +74,7 @@ const useStyles = makeStyles((theme) => ({
     opacity: "1",
     backgroundColor: "#fff",
     borderColor: "#356680",
+    marginBottom: '0.7vh'
   },
   label: {
     color: "#97A1A9",
@@ -136,6 +138,13 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
   const [open, setOpen] = useState(false);
   // const [piekeysArray, setPiekeysArray] = useState([]);
   // const [pieValuesArray, setPieValuesArray] = useState([]);
+  const [fromDueDate, setFromDueDate] = useState("");
+  const [toDueDate, setToDueDate] = useState("");
+  const [fromBSClearDate, setFromBSClearDate] = useState("");
+  const [toBSClearDate, setToBSClearDate] = useState("");
+  const [fromClearDate, setFromClearDate] = useState("");
+  const [toClearDate, setToClearDate] = useState("");
+  const [invoiceCurrencyArr, setInvoiceCurrencyArr] = useState("");
   const [pieChartData, setPieChartData] = useState({});
 
   const handleClickOpen = () => {
@@ -146,7 +155,7 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
   };
 
   useEffect(() => {
-    getPieChartData();
+    // getPieChartData();
   }, []);
 
   const getPieChartData = (e) => {
@@ -212,6 +221,148 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
           paper: classes.paper,
           root: classes.root,
         }}
+      >
+        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+          <Typography variant="h6" style={{ color: "#FFFFFF" }}>
+            Analytics View
+          </Typography>
+        </DialogTitle>
+        <DialogContent dividers>
+          <Grid style={{ display: "flex", flexDirection: "column" }}>
+            <Grid style={{ display: "flex", flexDirection: "row" }}>
+              <Grid style={{ display: "flex", flexDirection: "column", padding: "0.5vh 0.5vw" }}>
+                <Typography variant="h6" style={{ color: "#FFFFFF", fontSize: '1rem' }}>
+                  Clear Date
+                </Typography>
+                <TextField
+                  label="From Clear Date"
+                  InputLabelProps={{ shrink: true }}
+                  className={classes.TextField}
+                  type="date"
+                  variant="outlined"
+                  id="fromClearDate"
+                  onChange={(e) => setFromClearDate(e.target.value)}
+                />
+                <TextField
+                  label="To Clear Date"
+                  InputLabelProps={{ shrink: true }}
+                  className={classes.TextField}
+                  type="date"
+                  variant="outlined"
+                  id="toClearDate"
+                  onChange={(e) => setToClearDate(e.target.value)}
+                />
+              </Grid>
+              <Grid style={{ display: "flex", flexDirection: "column", padding: "0.5vh 0.5vw" }}>
+                <Typography variant="h6" style={{ color: "#FFFFFF", fontSize: '1rem' }}>
+                  Due Date
+                </Typography>
+                <TextField
+                  label="From Due Date"
+                  InputLabelProps={{ shrink: true }}
+                  className={classes.TextField}
+                  type="date"
+                  variant="outlined"
+                  id="fromDueDate"
+                  onChange={(e) => setFromDueDate(e.target.value)}
+                />
+                <TextField
+                  label="To Due Date"
+                  InputLabelProps={{ shrink: true }}
+                  className={classes.TextField}
+                  type="date"
+                  variant="outlined"
+                  id="toDueDate"
+                  onChange={(e) => setToDueDate(e.target.value)}
+                />
+              </Grid>
+            </Grid>
+            <Grid style={{ display: "flex", flexDirection: "row" }}>
+              <Grid style={{ display: "flex", flexDirection: "column", padding: "0.5vh 0.5vw" }}>
+                <Typography variant="h6" style={{ color: "#FFFFFF", fontSize: '1rem' }}>
+                  Baseline Create Date
+                </Typography>
+                <TextField
+                  label="From Baseline Create Date"
+                  InputLabelProps={{ shrink: true }}
+                  className={classes.TextField}
+                  type="date"
+                  variant="outlined"
+                  id="fromBSClearDate"
+                  onChange={(e) => setFromBSClearDate(e.target.value)}
+                />
+                <TextField
+                  label="To Baseline Create Date"
+                  InputLabelProps={{ shrink: true }}
+                  className={classes.TextField}
+                  type="date"
+                  variant="outlined"
+                  id="toBSClearDate"
+                  onChange={(e) => setToBSClearDate(e.target.value)}
+                />
+              </Grid>
+              <Grid style={{ display: "flex", flexDirection: "column", padding: "0.5vh 0.5vw" }}>
+                <Typography variant="h6" style={{ color: "#FFFFFF", fontSize: '1rem' }}>
+                  Invoice Currency
+                </Typography>
+                <TextField
+                  label="Invoice Currency"
+                  className={classes.TextField}
+                  type="text"
+                  variant="outlined"
+                  id="invoiceCurrencyArr"
+                  onChange={(e) => setInvoiceCurrencyArr(e.target.value)}
+                />
+              </Grid>
+            </Grid>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            classes={{ containedPrimary: classes.primary }}
+            variant="contained"
+            size="small"
+            className={classes.analyticsButtons}
+            onClick={(event) => {
+              event.preventDefault();
+              // handleEdit();
+              // displayData();
+              handleClose();
+            }}
+            style={{
+              color: "#FFFFFF",
+              width: "47vw",
+              borderBlockColor: "#14AFF1",
+              borderColor: "#fff",
+            }}
+          >
+            Submit
+          </Button>
+          <Button
+            variant="contained"
+            size="small"
+            onClick={handleClose}
+            className={classes.analyticsButtons}
+            style={{
+              color: "#FFFFFF",
+              width: "47vw",
+              borderBlockColor: "#14AFF1",
+              borderColor: "#fff",
+            }}
+          >
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+
+      <Dialog
+        // onClose={handleClose}
+        aria-labelledby="customized-dialog-title"
+        // open={open}
+        classes={{
+          paper: classes.paper,
+          root: classes.root,
+        }}
         style={{}}
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
@@ -220,11 +371,9 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
           </Typography>
         </DialogTitle>
         <DialogContent dividers>
-          <Grid container style={{display: 'flex', justifyContent: 'center'}}>
+          <Grid container style={{ display: "flex", justifyContent: "center" }}>
             <Grid item>
-              <Pie
-                data={pieChartData}
-              />
+              <Pie data={pieChartData} />
             </Grid>
           </Grid>
         </DialogContent>
@@ -249,3 +398,21 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
     </div>
   );
 }
+
+// {
+//   "bar": {
+//     "U001": {
+//       "total_open_amount": 1000,
+//       "number_of_customers": 338
+//     },
+//     "U002": {
+//       "total_open_amount": 1560,
+//       "number_of_customers": 446
+//     }
+//   },
+//   "pie": {
+//     "USD": 4587,
+//     "CAD": 674,
+//     "INR": 748
+//   }
+// }

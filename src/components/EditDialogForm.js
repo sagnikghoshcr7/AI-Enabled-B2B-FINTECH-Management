@@ -179,10 +179,13 @@ export default function EditDialogForm({ displayData }) {
     <div>
       <Button
         variant="outlined"
-        color="primary"
+        // color="primary"
         size="small"
         className={classes.edit_main_btn}
         onClick={handleClickOpen}
+        color={rowSelectArr.length > 0 ? "secondary" : "primary"}
+        disabled={!rowSelectArr.length > 0}
+        style={{backgroundColor: rowSelectArr.length > 0 ? "#2C414E" : "#39495E"}}
       >
         Edit
       </Button>

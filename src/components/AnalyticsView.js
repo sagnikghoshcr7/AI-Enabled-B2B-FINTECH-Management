@@ -12,12 +12,30 @@ import EditIcon from "@material-ui/icons/Edit";
 import InputLabel from "@material-ui/core/InputLabel";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
-import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import {
+  Chart as ChartJS,
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+} from "chart.js";
 import { Bar, Pie } from "react-chartjs-2";
 import axios from "axios";
+import qs from "qs";
 import { SERVER_URL } from "../utils/constants";
 
-ChartJS.register(ArcElement, Tooltip, Legend);
+ChartJS.register(
+  ArcElement,
+  Tooltip,
+  Legend,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title
+);
 
 const styles = (theme) => ({
   root: {
@@ -74,7 +92,7 @@ const useStyles = makeStyles((theme) => ({
     opacity: "1",
     backgroundColor: "#fff",
     borderColor: "#356680",
-    marginBottom: '0.7vh'
+    marginBottom: "0.7vh",
   },
   label: {
     color: "#97A1A9",
@@ -133,9 +151,23 @@ const DialogActions = withStyles((theme) => ({
   },
 }))(MuiDialogActions);
 
+export const options = {
+  responsive: true,
+  plugins: {
+    legend: {
+      position: "top",
+    },
+    title: {
+      display: true,
+      text: "Chart.js Bar Chart",
+    },
+  },
+};
+
 export default function AnalyticsView({ displayData, setAdvSearchParams }) {
   const classes = useStyles();
-  const [open, setOpen] = useState(false);
+  const [formOpen, setFormOpen] = useState(false);
+  const [graphsOpen, setGraphsOpen] = useState(false);
   // const [piekeysArray, setPiekeysArray] = useState([]);
   // const [pieValuesArray, setPieValuesArray] = useState([]);
   const [fromDueDate, setFromDueDate] = useState("");
@@ -145,18 +177,85 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
   const [fromClearDate, setFromClearDate] = useState("");
   const [toClearDate, setToClearDate] = useState("");
   const [invoiceCurrencyArr, setInvoiceCurrencyArr] = useState("");
+  const [analyticstData, setAnalyticsData] = useState({});
   const [pieChartData, setPieChartData] = useState({});
 
-  const handleClickOpen = () => {
-    setOpen(true);
+  const handleClickFormOpen = () => {
+    setFormOpen(true);
   };
-  const handleClose = () => {
-    setOpen(false);
+  const handleFormClose = () => {
+    setFormOpen(false);
+    getAnalyticsData();
+    getPieChartData();
+    setTimeout(() => {
+      handleClickGraphsOpen();
+    }, 1000);
   };
 
-  useEffect(() => {
-    // getPieChartData();
-  }, []);
+  const handleClickGraphsOpen = () => {
+    setGraphsOpen(true);
+  };
+  const handleGraphsClose = () => {
+    setGraphsOpen(false);
+  };
+
+  // useEffect(() => {
+  //   getPieChartData();
+  // }, []);
+
+  const getAnalyticsData = (e) => {
+    var data = qs.stringify({
+      from_cl: "",
+      to_cl: "",
+      from_due: "",
+      to_due: "",
+      from_base: "",
+      to_base: "",
+    });
+    var config = {
+      method: "post",
+      url: SERVER_URL + "hrc/Combined",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        // console.log(JSON.stringify(response.data));
+        // console.log(
+        //   response.data.map((data) => {
+        //     return data["business_code"];
+        //   })
+        // );
+
+        setAnalyticsData({
+          labels: response.data.map((data) => {
+            return data["business_code"];
+          }),
+          datasets: [
+            {
+              label: "Total Open Amount",
+              data: response.data.map((data) => {
+                return data["total_open_amount"];
+              }),
+              backgroundColor: "rgba(255, 99, 132, 0.5)",
+            },
+            {
+              label: "No. Of Customers",
+              data: response.data.map((data) => {
+                return data["no_of_cust"];
+              }),
+              backgroundColor: "rgba(53, 162, 235, 0.5)",
+            },
+          ],
+        });
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   const getPieChartData = (e) => {
     var config = {
@@ -200,7 +299,7 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
     <div>
       <Button
         variant="outlined"
-        onClick={handleClickOpen}
+        onClick={handleClickFormOpen}
         color="primary"
         size="small"
         style={{
@@ -214,15 +313,15 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
       </Button>
 
       <Dialog
-        onClose={handleClose}
+        onClose={handleFormClose}
         aria-labelledby="customized-dialog-title"
-        open={open}
+        open={formOpen}
         classes={{
           paper: classes.paper,
           root: classes.root,
         }}
       >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <DialogTitle id="customized-dialog-title" onClose={handleFormClose}>
           <Typography variant="h6" style={{ color: "#FFFFFF" }}>
             Analytics View
           </Typography>
@@ -230,8 +329,17 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
         <DialogContent dividers>
           <Grid style={{ display: "flex", flexDirection: "column" }}>
             <Grid style={{ display: "flex", flexDirection: "row" }}>
-              <Grid style={{ display: "flex", flexDirection: "column", padding: "0.5vh 0.5vw" }}>
-                <Typography variant="h6" style={{ color: "#FFFFFF", fontSize: '1rem' }}>
+              <Grid
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "0.5vh 0.5vw",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  style={{ color: "#FFFFFF", fontSize: "1rem" }}
+                >
                   Clear Date
                 </Typography>
                 <TextField
@@ -253,8 +361,17 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
                   onChange={(e) => setToClearDate(e.target.value)}
                 />
               </Grid>
-              <Grid style={{ display: "flex", flexDirection: "column", padding: "0.5vh 0.5vw" }}>
-                <Typography variant="h6" style={{ color: "#FFFFFF", fontSize: '1rem' }}>
+              <Grid
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "0.5vh 0.5vw",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  style={{ color: "#FFFFFF", fontSize: "1rem" }}
+                >
                   Due Date
                 </Typography>
                 <TextField
@@ -278,8 +395,17 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
               </Grid>
             </Grid>
             <Grid style={{ display: "flex", flexDirection: "row" }}>
-              <Grid style={{ display: "flex", flexDirection: "column", padding: "0.5vh 0.5vw" }}>
-                <Typography variant="h6" style={{ color: "#FFFFFF", fontSize: '1rem' }}>
+              <Grid
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "0.5vh 0.5vw",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  style={{ color: "#FFFFFF", fontSize: "1rem" }}
+                >
                   Baseline Create Date
                 </Typography>
                 <TextField
@@ -301,8 +427,17 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
                   onChange={(e) => setToBSClearDate(e.target.value)}
                 />
               </Grid>
-              <Grid style={{ display: "flex", flexDirection: "column", padding: "0.5vh 0.5vw" }}>
-                <Typography variant="h6" style={{ color: "#FFFFFF", fontSize: '1rem' }}>
+              <Grid
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  padding: "0.5vh 0.5vw",
+                }}
+              >
+                <Typography
+                  variant="h6"
+                  style={{ color: "#FFFFFF", fontSize: "1rem" }}
+                >
                   Invoice Currency
                 </Typography>
                 <TextField
@@ -327,7 +462,7 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
               event.preventDefault();
               // handleEdit();
               // displayData();
-              handleClose();
+              handleFormClose();
             }}
             style={{
               color: "#FFFFFF",
@@ -341,7 +476,7 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
           <Button
             variant="contained"
             size="small"
-            onClick={handleClose}
+            onClick={handleFormClose}
             className={classes.analyticsButtons}
             style={{
               color: "#FFFFFF",
@@ -358,20 +493,23 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
       <Dialog
         // onClose={handleClose}
         aria-labelledby="customized-dialog-title"
-        // open={open}
+        open={graphsOpen}
         classes={{
           paper: classes.paper,
           root: classes.root,
         }}
         style={{}}
       >
-        <DialogTitle id="customized-dialog-title" onClose={handleClose}>
+        <DialogTitle id="customized-dialog-title" onClose={handleGraphsClose}>
           <Typography variant="h6" style={{ color: "#FFFFFF" }}>
             Analytics View
           </Typography>
         </DialogTitle>
         <DialogContent dividers>
           <Grid container style={{ display: "flex", justifyContent: "center" }}>
+            <Grid item style={{width: '40vw', paddingBottom: '7vh'}}>
+              <Bar options={options} data={analyticstData} />
+            </Grid>
             <Grid item>
               <Pie data={pieChartData} />
             </Grid>
@@ -382,7 +520,7 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
             variant="contained"
             color="#273D49CC"
             size="small"
-            onClick={handleClose}
+            onClick={handleGraphsClose}
             className={classes.analyticsButtons}
             style={{
               color: "#FFFFFF",

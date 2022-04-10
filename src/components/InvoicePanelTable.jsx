@@ -21,7 +21,6 @@ import {
 
 import axios from "axios";
 import qs from "qs";
-import InfiniteScroll from "react-infinite-scroll-component";
 import { headCells } from "./headCells";
 import { CircularProgress } from "@material-ui/core";
 import "../styles.css";
@@ -72,6 +71,7 @@ const useStyles = makeStyles((theme) => ({
   tablecontainer: {
     maxHeight: 370,
     marginBottom: "10px",
+    overflowX: "auto !important",
   },
   infiniteScrollGrid: {
     paddingLeft: "30px",
@@ -156,13 +156,6 @@ const useStyles = makeStyles((theme) => ({
 export default function InvoicePanelTable() {
   const classes = useStyles();
   const [selected, setSelected] = useState([]);
-  const [search, setSearch] = useState("");
-  const [add, setAdd] = useState(false);
-  const [edit, setEdit] = useState(false);
-  const [remove, setRemove] = useState(false);
-  const [pageCount, setCount] = useState(1);
-  const [responseData, setResponseData] = useState([]);
-  const [isNext, isNextFunc] = useState(false);
   const [toatalDataCount, setToatalDataCount] = useState(0);
   const [rowData, setRowData] = useState([]);
   const [anchorEl, setAnchorEl] = useState(null);
@@ -178,8 +171,9 @@ export default function InvoicePanelTable() {
   const [advInvoiceId, setAdvInvoiceId] = useState("");
   const [advBusinessYear, setAdvBusinessYear] = useState("");
   const [addOrderByColumn, setAddOrderByColumn] = useState("");
+  const [predictDataObj, setPredictDataObj] = useState([]);
 
-  const { setRowSelectArr } = useContext(RowSelectContext);
+  const { rowSelectArr, setRowSelectArr } = useContext(RowSelectContext);
 
   const rowCountOptions = [5, 10, 20];
 
@@ -278,82 +272,33 @@ export default function InvoicePanelTable() {
       });
   };
 
-  // fetching pages to implement infinte scroll
-  const handleLoad = React.useCallback(() => {
-    try {
-      const fetchData = async () => {
-        const response = await axios.get(
-          `${SERVER_URL}/${ROLL_NUMBER}/UpdatePage?PageNo=${pageCount}`
-        );
+  const predictData = (e) => {
+    var data = predictDataObj;
 
-        setResponseData([...responseData, ...response.data]);
-        isNextFunc(true);
-      };
-      fetchData();
-    } catch (error) {
-      console.log(error);
-    }
-  }, [pageCount]);
+    var config = {
+      method: "post",
+      url: "http://127.0.0.1:5000/predict",
+      headers: {
+        "Content-Type": "application/json",
+        "Access-Control-Allow-Origin": true,
+      },
+      data: data,
+    };
 
-  function fetchMoreData() {
-    setCount(pageCount + 1);
-  }
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
 
   useEffect(() => {
     displayData();
     countTotalData();
+    predictData();
   }, []);
-
-  // React.useEffect(() => {
-  //   handleLoad();
-  // }, [handleLoad, pageCount]);
-
-  // const handleAdd = () => {
-  //   setAdd(!add);
-  //   handleLoad();
-  // };
-
-  const handleRemove = () => {
-    setRemove(!remove);
-    handleLoad();
-  };
-
-  // const handleEdit = () => {
-  //   setEdit(!edit);
-  //   handleLoad();
-  //   // setSelected([]);
-  // };
-
-  // for search operation using debouncing.
-  const debounce = (func) => {
-    let timer;
-    return function (...args) {
-      const context = this;
-      if (timer) clearTimeout(timer);
-      timer = setTimeout(() => {
-        timer = null;
-        func.apply(context, args);
-      }, 1000);
-    };
-  };
-  const handleSearch = (e) => {
-    setSearch(e.target.value);
-    console.log(e.target.value);
-    try {
-      const fetchData = async () => {
-        const response = await axios.get(
-          `${SERVER_URL}/${ROLL_NUMBER}/SearchData?DocId=${e.target.value}`
-        );
-        setResponseData([...response.data]);
-        console.log([...response.data]);
-      };
-      fetchData();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const optimisedSearch = useCallback(debounce(handleSearch), []);
 
   const refreshButtonClick = (event) => {
     SetRowOffset(0);
@@ -370,7 +315,7 @@ export default function InvoicePanelTable() {
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
       setSelected(rowData.map((row) => row.sl_no));
-      setRowSelectArr(rowData.map((row) => row.sl_no))
+      setRowSelectArr(rowData.map((row) => row.sl_no));
       // console.log(selected);
       // console.log(rowData.map((row) => row.sl_no));
       return;
@@ -400,10 +345,20 @@ export default function InvoicePanelTable() {
     }
     setSelected(newSelected);
     setRowSelectArr(newSelected);
+    // console.log(newSelected);
     // console.log(newSelected[newSelected.length - 1]);
   };
 
   const isSelected = (sl_no) => selected.indexOf(sl_no) !== -1;
+
+  let prdDummyArr = [];
+  const predictButtonClick = () => {
+    rowSelectArr.map((rowVal) => {
+      prdDummyArr.push(rowData[rowVal - 1]);
+    });
+    setPredictDataObj(JSON.stringify(prdDummyArr));
+    // console.log(predictDataObj);
+  };
 
   let goPreviousButton;
 
@@ -434,16 +389,12 @@ export default function InvoicePanelTable() {
   const goPreviousRows = () => {
     SetRowOffset(rowOffset - rowCountOptions[selectedRowIndex]);
     setRowFirstCount(rowFirstCount - rowCountOptions[selectedRowIndex]);
-    // SetRowOffset(rowOffset - rowCountOptions[tempSelectedRowIndex]);
-    // setRowFirstCount(rowFirstCount - rowCountOptions[tempSelectedRowIndex]);
     displayData();
   };
 
   const goNextRows = () => {
     SetRowOffset(rowOffset + rowCountOptions[selectedRowIndex]);
     setRowFirstCount(rowFirstCount + rowCountOptions[selectedRowIndex]);
-    // SetRowOffset(rowOffset + rowCountOptions[tempSelectedRowIndex]);
-    // setRowFirstCount(rowFirstCount + rowCountOptions[tempSelectedRowIndex]);
     displayData();
   };
 
@@ -469,6 +420,7 @@ export default function InvoicePanelTable() {
                 variant="contained"
                 color={selected.length > 0 ? "secondary" : "primary"}
                 size="small"
+                onClick={predictButtonClick}
               >
                 Predict
               </Button>
@@ -565,13 +517,23 @@ export default function InvoicePanelTable() {
                         displayData();
                       }}
                     >
-                      {headCell.label}
-                      <UnfoldMoreIcon
+                      <pre
                         style={{
-                          color: "#fff",
-                          fontSize: "10",
+                          margin: "auto 10px",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          gap: 5,
                         }}
-                      />
+                      >
+                        {headCell.label}
+                        <UnfoldMoreIcon
+                          style={{
+                            color: "#fff",
+                            fontSize: "10",
+                          }}
+                        />
+                      </pre>
                     </TableCell>
                   ))}
                 </TableRow>
@@ -643,6 +605,8 @@ export default function InvoicePanelTable() {
                       <TableCell align="left">
                         {row.cust_payment_terms}
                       </TableCell>
+                      <TableCell align="left">{row.invoice_id}</TableCell>
+                      <TableCell align="left">-</TableCell>
                     </TableRow>
                   );
                 })}
@@ -703,4 +667,3 @@ export default function InvoicePanelTable() {
     </div>
   );
 }
-

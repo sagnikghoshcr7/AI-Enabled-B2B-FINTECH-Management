@@ -236,9 +236,9 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
           }),
           datasets: [
             {
-              label: "Total Open Amount",
+              label: "Total Open Amount (Scale = 1/30000)",
               data: response.data.map((data) => {
-                return data["total_open_amount"];
+                return (data["total_open_amount"])/30000;
               }),
               backgroundColor: "rgba(255, 99, 132, 0.5)",
             },

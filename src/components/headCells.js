@@ -84,10 +84,22 @@ export const headCells = [
     label: "Business Create Date",
   },
   {
-    id: "  cust_payment_terms",
+    id: "cust_payment_terms",
     numeric: false,
     disablePadding: false,
     label: "Customer Payment Terms",
+  },
+  {
+    id: "invoice_id",
+    numeric: false,
+    disablePadding: false,
+    label: "Invoice Id",
+  },
+  {
+    id: "aging_bucket",
+    numeric: false,
+    disablePadding: false,
+    label: "Aging Bucket",
   },
   
 ];

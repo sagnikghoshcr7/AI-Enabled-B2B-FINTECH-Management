@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from "react";
-import { makeStyles } from "@material-ui/core/styles";
+import { makeStyles, useTheme } from "@material-ui/core/styles";
 import NavigateNextIcon from "@material-ui/icons/NavigateNext";
 import NavigateBeforeIcon from "@material-ui/icons/NavigateBefore";
 import {
@@ -37,6 +37,7 @@ import { useCallback } from "react";
 import AdvanceSearch from "./AdvanceSearch";
 import { RowSelectContext } from "../contexts/RowSelectContext";
 import AnalyticsView from "./AnalyticsView";
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -142,7 +143,6 @@ const useStyles = makeStyles((theme) => ({
     padding: "2px 4px",
     display: "flex",
     alignItems: "center",
-    width: 200,
     border: `1px solid ${theme.palette.secondary.main}`,
   },
   primary: {
@@ -154,6 +154,9 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 export default function InvoicePanelTable() {
+  const theme = useTheme();
+  const matchesMD = useMediaQuery(theme.breakpoints.down("md"));
+  const matchesSM = useMediaQuery(theme.breakpoints.down("sm"));
   const classes = useStyles();
   const [selected, setSelected] = useState([]);
   const [toatalDataCount, setToatalDataCount] = useState(0);
@@ -172,6 +175,9 @@ export default function InvoicePanelTable() {
   const [advBusinessYear, setAdvBusinessYear] = useState("");
   const [addOrderByColumn, setAddOrderByColumn] = useState("");
   const [predictDataObj, setPredictDataObj] = useState([]);
+  const [predSlNo, setPredSlNo] = useState("");
+  const [predAgingBucket, setPredAgingBucket] = useState("");
+  const [predDate, setPredDate] = useState("");
 
   const { rowSelectArr, setRowSelectArr } = useContext(RowSelectContext);
 
@@ -272,6 +278,30 @@ export default function InvoicePanelTable() {
       });
   };
 
+  const addPredDataToDB = (e) => {
+    var data = qs.stringify({
+      sl_no: predSlNo,
+      aging_bucket: predAgingBucket,
+      predicted: predDate,
+    });
+    var config = {
+      method: "post",
+      url: SERVER_URL + "hrc/api/Predict",
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+      data: data,
+    };
+
+    axios(config)
+      .then(function (response) {
+        console.log(JSON.stringify(response.data));
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
+  };
+
   const predictData = (e) => {
     var data = predictDataObj;
 
@@ -287,7 +317,17 @@ export default function InvoicePanelTable() {
 
     axios(config)
       .then(function (response) {
-        console.log(JSON.stringify(response.data));
+        // console.log(JSON.stringify(response.data));
+        response.data.map((data) => {
+          // return console.log(data);
+          setTimeout(() => {
+            setPredSlNo(data.sl_no);
+            setPredAgingBucket(data.aging_bucket);
+            setPredDate(data.predicted_payment_date);
+            addPredDataToDB();
+          }, 100 * data.length);
+        });
+        displayData();
       })
       .catch(function (error) {
         console.log(error);
@@ -297,7 +337,6 @@ export default function InvoicePanelTable() {
   useEffect(() => {
     displayData();
     countTotalData();
-    predictData();
   }, []);
 
   const refreshButtonClick = (event) => {
@@ -354,10 +393,10 @@ export default function InvoicePanelTable() {
   let prdDummyArr = [];
   const predictButtonClick = () => {
     rowSelectArr.map((rowVal) => {
-      prdDummyArr.push(rowData[rowVal - 1]);
+      return prdDummyArr.push(rowData[rowVal - 1]);
     });
     setPredictDataObj(JSON.stringify(prdDummyArr));
-    // console.log(predictDataObj);
+    predictData();
   };
 
   let goPreviousButton;
@@ -404,18 +443,24 @@ export default function InvoicePanelTable() {
         <Grid xs={12}>
           <Grid
             container
-            direction="row"
+            direction={matchesSM ? "column" : "row"}
             justify="space around"
             className={classes.header}
             variant="outlined "
           >
-            <Grid item xs={4} direction="row" style={{ display: "flex" }}>
+            <Grid
+              item
+              xs={4}
+              direction="row"
+              style={{ display: "flex", paddingBottom: matchesSM ? "2vh" : 0 }}
+            >
               <Button
                 classes={{ containedPrimary: classes.primary }}
                 style={{
                   backgroundColor: "#15AEF2",
                   borderRadius: "4px 0 0 4px",
                   width: "10vw",
+                  height: "5vh",
                 }}
                 variant="contained"
                 color={selected.length > 0 ? "secondary" : "primary"}
@@ -436,7 +481,11 @@ export default function InvoicePanelTable() {
               item
               xs={3}
               direction="row"
-              style={{ display: "flex", justifyContent: "center" }}
+              style={{
+                display: "flex",
+                justifyContent: "center",
+                paddingBottom: matchesSM ? "2vh" : 0,
+              }}
             >
               <RefreshIcon
                 onClick={refreshButtonClick}
@@ -452,6 +501,9 @@ export default function InvoicePanelTable() {
                 component="form"
                 className={classes.searchpaper}
                 alignItems="center"
+                style={{
+                  width: matchesSM ? "70vw" : "15vw",
+                }}
               >
                 <InputBase
                   className={classes.input}
@@ -467,7 +519,14 @@ export default function InvoicePanelTable() {
                 />
               </Paper>
             </Grid>
-            <Grid container item xs={5} justify="space-between">
+            <Grid
+              container
+              direction="row"
+              item
+              xs={5}
+              justify="space-between"
+              style={{ display: "flex", paddingBottom: matchesSM ? "2vh" : 0 }}
+            >
               <AddFormDialog displayData={displayData} />
               <EditDialogForm displayData={displayData} />
               <DeleteDialogForm
@@ -606,7 +665,12 @@ export default function InvoicePanelTable() {
                         {row.cust_payment_terms}
                       </TableCell>
                       <TableCell align="left">{row.invoice_id}</TableCell>
-                      <TableCell align="left">-</TableCell>
+                      <TableCell align="left">
+                        {row.predicted == null ? "-" : row.predicted}
+                      </TableCell>
+                      <TableCell align="left">
+                        {row.aging_bucket == null ? "-" : row.aging_bucket}
+                      </TableCell>
                     </TableRow>
                   );
                 })}

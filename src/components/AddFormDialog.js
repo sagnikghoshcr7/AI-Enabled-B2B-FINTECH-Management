@@ -171,7 +171,7 @@ export default function EditDialogForm({ displayData }) {
       doc_id: addDocumentId,
       posting_date: addPostingDate,
       document_create_date: addDocumentCreateDate,
-      // 'document_create_date1': '2019-01-05',
+      document_create_date1: addDocumentCreateDate,
       due_in_date: addDueDate,
       invoice_currency: addInvoiceCurrency,
       document_type: addDocumentType,

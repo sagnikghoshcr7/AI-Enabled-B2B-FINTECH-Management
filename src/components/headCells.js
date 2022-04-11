@@ -96,6 +96,12 @@ export const headCells = [
     label: "Invoice Id",
   },
   {
+    id: "predicted",
+    numeric: false,
+    disablePadding: false,
+    label: "Predicted Payment Date",
+  },
+  {
     id: "aging_bucket",
     numeric: false,
     disablePadding: false,

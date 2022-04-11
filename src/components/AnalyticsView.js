@@ -170,13 +170,13 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
   const [graphsOpen, setGraphsOpen] = useState(false);
   // const [piekeysArray, setPiekeysArray] = useState([]);
   // const [pieValuesArray, setPieValuesArray] = useState([]);
+  const [fromClearDate, setFromClearDate] = useState("");
+  const [toClearDate, setToClearDate] = useState("");
   const [fromDueDate, setFromDueDate] = useState("");
   const [toDueDate, setToDueDate] = useState("");
   const [fromBSClearDate, setFromBSClearDate] = useState("");
   const [toBSClearDate, setToBSClearDate] = useState("");
-  const [fromClearDate, setFromClearDate] = useState("");
-  const [toClearDate, setToClearDate] = useState("");
-  const [invoiceCurrencyArr, setInvoiceCurrencyArr] = useState("");
+  const [invoiceCurrencyStr, setInvoiceCurrencyStr] = useState("");
   const [analyticstData, setAnalyticsData] = useState({});
   const [pieChartData, setPieChartData] = useState({});
 
@@ -205,12 +205,12 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
 
   const getAnalyticsData = (e) => {
     var data = qs.stringify({
-      from_cl: "",
-      to_cl: "",
-      from_due: "",
-      to_due: "",
-      from_base: "",
-      to_base: "",
+      from_cl: fromClearDate,
+      to_cl: toClearDate,
+      from_due: fromDueDate,
+      to_due: toDueDate,
+      from_base: fromBSClearDate,
+      to_base: toBSClearDate,
     });
     var config = {
       method: "post",
@@ -258,10 +258,17 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
   };
 
   const getPieChartData = (e) => {
+    var data = qs.stringify({
+      'invoice_curr': invoiceCurrencyStr
+    });
+
     var config = {
-      method: "get",
+      method: 'post',
       url: SERVER_URL + "hrc/api/PieChart",
-      headers: {},
+      headers: { 
+        'Content-Type': 'application/x-www-form-urlencoded'
+      },
+      data : data
     };
 
     axios(config)
@@ -446,7 +453,7 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
                   type="text"
                   variant="outlined"
                   id="invoiceCurrencyArr"
-                  onChange={(e) => setInvoiceCurrencyArr(e.target.value)}
+                  onChange={(e) => setInvoiceCurrencyStr(e.target.value)}
                 />
               </Grid>
             </Grid>

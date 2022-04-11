@@ -317,6 +317,7 @@ export default function InvoicePanelTable() {
 
     axios(config)
       .then(function (response) {
+        // console.log(JSON.stringify(prdDummyArr));
         // console.log(JSON.stringify(response.data));
         response.data.map((data) => {
           // return console.log(data);

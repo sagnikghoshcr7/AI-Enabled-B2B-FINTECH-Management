@@ -10,12 +10,14 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import EditIcon from "@material-ui/icons/Edit";
-import InputLabel from "@material-ui/core/InputLabel";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import { RowSelectContext } from "../contexts/RowSelectContext";
 import { SERVER_URL } from "../utils/constants";
+
+toast.configure();
 
 const styles = (theme) => ({
   root: {
@@ -138,6 +140,32 @@ export default function EditDialogForm({ displayData }) {
 
   const { rowSelectArr } = useContext(RowSelectContext);
 
+  const successNotify = () => {
+    toast.success("Item Edited Successfully", {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "dark",
+      progress: undefined,
+    });
+  };
+
+  const errorNotify = () => {
+    toast.error("Item Not Edited", {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "dark",
+      progress: undefined,
+    });
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -169,9 +197,11 @@ export default function EditDialogForm({ displayData }) {
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         displayData();
+        successNotify();
       })
       .catch(function (error) {
         console.log(error);
+        errorNotify();
       });
   };
 
@@ -185,7 +215,9 @@ export default function EditDialogForm({ displayData }) {
         onClick={handleClickOpen}
         color={rowSelectArr.length > 0 ? "secondary" : "primary"}
         disabled={!rowSelectArr.length > 0}
-        style={{backgroundColor: rowSelectArr.length > 0 ? "#2C414E" : "#39495E"}}
+        style={{
+          backgroundColor: rowSelectArr.length > 0 ? "#2C414E" : "#39495E",
+        }}
       >
         Edit
       </Button>

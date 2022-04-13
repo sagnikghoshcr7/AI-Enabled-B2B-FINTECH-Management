@@ -10,8 +10,12 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import { SERVER_URL, ROLL_NUMBER } from "../utils/constants";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import { SERVER_URL } from "../utils/constants";
 import { RowSelectContext } from "../contexts/RowSelectContext";
+
+toast.configure();
 
 const styles = (theme) => ({
   root: {
@@ -92,6 +96,33 @@ export default function DeleteDialogForm({ displayData, countTotalData }) {
   //   console.log(rowSelectArr);
   // });
 
+  const successNotify = () => {
+    toast.error("Item(s) Deleted Successfully", {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "dark",
+      progress: undefined,
+      limit: 1
+    });
+  };
+
+  const errorNotify = () => {
+    toast.warn("Item(s) Not Deleted", {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "dark",
+      progress: undefined,
+    });
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -99,7 +130,7 @@ export default function DeleteDialogForm({ displayData, countTotalData }) {
     setOpen(false);
   };
 
-  const editData = (rowNo, e) => {
+  const deleteData = (rowNo, e) => {
     console.log(rowNo);
     var data = qs.stringify({
       sl_no: rowNo,
@@ -118,14 +149,16 @@ export default function DeleteDialogForm({ displayData, countTotalData }) {
         console.log(JSON.stringify(response.data));
         displayData();
         countTotalData();
+        successNotify();
       })
       .catch(function (error) {
         console.log(error);
+        errorNotify();
       });
   };
 
   function helperDelete(rowNo) {
-    editData(rowNo);
+    deleteData(rowNo);
   }
 
   const handleDelete = (e) => {
@@ -140,6 +173,10 @@ export default function DeleteDialogForm({ displayData, countTotalData }) {
         size="small"
         className={classes.deletemain}
         onClick={handleClickOpen}
+        disabled={!rowSelectArr.length > 0}
+        style={{
+          backgroundColor: rowSelectArr.length > 0 ? "#2C414E" : "#39495E",
+        }}
       >
         Delete
       </Button>
@@ -155,12 +192,12 @@ export default function DeleteDialogForm({ displayData, countTotalData }) {
       >
         <DialogTitle id="customized-dialog-title" onClose={handleClose}>
           <Typography variant="h6" style={{ color: "#FFFFFF" }}>
-            Delete record[s] ?
+            Delete records ?
           </Typography>
         </DialogTitle>
         <DialogContent dividers>
           <Typography gutterBottom variant="body2" style={{ color: "#C0C6CA" }}>
-            Are you sure you want to delete these records ?
+            Are you sure you want to delete these record[s] ?
           </Typography>
         </DialogContent>
         <DialogActions>

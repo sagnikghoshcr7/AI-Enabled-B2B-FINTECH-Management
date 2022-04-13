@@ -1,8 +1,8 @@
-import { Grid, makeStyles, Typography } from "@material-ui/core";
+import { Grid, makeStyles } from "@material-ui/core";
 import CompanyLogo from "../assets/companyLogo.svg";
 import Logo from "../assets/logo.svg";
 import React from "react";
-// import Grid from '@material-ui/core/Grid';
+
 
 const useStyles = makeStyles({
   main: {
@@ -17,10 +17,9 @@ const useStyles = makeStyles({
   },
   companyName: {
     textAlign: "left",
-    fontFamily: 'serif',
-    fontWeight: '600',
+    fontFamily: "serif",
+    fontWeight: "600",
     letterSpacing: "0px",
-    color: "#FFFFFF",
     opacity: 1,
     marginLeft: "2.5vw",
     fontSize: "1.5rem",
@@ -49,26 +48,30 @@ const useStyles = makeStyles({
 const Header = () => {
   const classes = useStyles();
   return (
-    <div className={classes.main}>
-      <Grid container>
-        <Grid container item xs={12}>
-          <Grid item xs={4}>
-            <img
-              src={CompanyLogo}
-              alt="companylogo"
-              className={classes.comLogo}
-            />
-            <Typography className={classes.companyName}>
-              ABC Products
-            </Typography>
+      <div className={classes.main}>
+        <Grid container>
+          <Grid container item xs={12}>
+            <Grid item xs={4}>
+              <img
+                src={CompanyLogo}
+                alt="companylogo"
+                className={classes.comLogo}
+              />
+              <h4 className={classes.companyName}>
+                ABC Products
+              </h4>
+            </Grid>
+            <Grid item xs={4} style={{ textAlign: "center" }}>
+              <img
+                src={Logo}
+                alt="highradius-logo"
+                className={classes.hrcLogo}
+              />
+            </Grid>
+            <Grid item xs={4}></Grid>
           </Grid>
-          <Grid item xs={4} style={{ textAlign: "center" }}>
-            <img src={Logo} alt="highradius-logo" className={classes.hrcLogo} />
-          </Grid>
-          <Grid item xs={4}></Grid>
         </Grid>
-      </Grid>
-    </div>
+      </div>
   );
 };
 

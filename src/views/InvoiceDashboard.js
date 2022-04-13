@@ -3,14 +3,25 @@ import { makeStyles } from "@material-ui/core";
 
 import Header from "../components/Header";
 import InvoicePanelTable from "./../components/InvoicePanelTable";
-// import InvoiceTable from '../components/InvoiceTable';
-// import InceptionScroll from '../extra/InceptionScroll';
-// import DebounceAssignment from '../components/DebounceAssignment';
-// import PanelHeader from '../components/PanelHeader';
 import "../styles.css";
 import Footer from "../components/Footer";
 
 import { RowSelectContext } from "../contexts/RowSelectContext";
+
+import { ThemeProvider } from "styled-components";
+import { GlobalStyles } from "../utils/GlobalStyles";
+import { lightTheme, darkTheme } from "../utils/stTheme";
+import Brightness3Icon from "@material-ui/icons/Brightness3";
+import WbSunnyIcon from "@material-ui/icons/WbSunny";
+import { createGlobalStyle } from "styled-components";
+
+const GlobalStyle = createGlobalStyle`
+body {
+  background: ${({ theme }) => theme.body};
+  color: ${({ theme }) => theme.text};
+  transition: all 0.50s linear;
+}
+`;
 
 const useStyles = makeStyles({
   mainDashboard: {
@@ -18,27 +29,47 @@ const useStyles = makeStyles({
     left: "0px",
     width: "100vw",
     height: "100vh",
-    background:
-      "transparent radial-gradient(closest-side at 50% 50%, #58687E 0%, #39495E 100%) 0% 0% no-repeat padding-box",
+    // backgroundColor: "#29384c",
     opacity: "1",
   },
 });
 
 const InvoiceDashboard = () => {
   const [rowSelectArr, setRowSelectArr] = useState([]);
+  const stored = localStorage.getItem("isDarkMode");
+  const [isDarkMode, setIsDarkMode] = useState(
+    stored === "true" ? false : true
+  );
 
   const classes = useStyles();
   return (
-    <div className={classes.mainDashboard}>
-      <RowSelectContext.Provider value={{ rowSelectArr, setRowSelectArr }}>
-        <Header />
-        <InvoicePanelTable />
-        {/* <PanelHeader/> */}
-        {/* <DebounceAssignment/> */}
-        {/* <InvoiceTable/> */}
-        <Footer />
-      </RowSelectContext.Provider>
-    </div>
+    <ThemeProvider theme={isDarkMode ? darkTheme : lightTheme}>
+      <GlobalStyles />
+      <div className={classes.mainDashboard}>
+        <RowSelectContext.Provider value={{ rowSelectArr, setRowSelectArr }}>
+          <Header />
+          <div style={{position: 'absolute',top: '6vh', right: '5vw'}} onClick={() => setIsDarkMode(!isDarkMode)}>
+            {isDarkMode === true ? (
+              <WbSunnyIcon
+                style={{
+                  color: "#ffc107",
+                  fontSize: "30",
+                }}
+              />
+            ) : (
+              <Brightness3Icon
+                style={{
+                  color: "#273C49",
+                  fontSize: "30",
+                }}
+              />
+            )}
+          </div>
+          <InvoicePanelTable />
+          <Footer />
+        </RowSelectContext.Provider>
+      </div>
+    </ThemeProvider>
   );
 };
 

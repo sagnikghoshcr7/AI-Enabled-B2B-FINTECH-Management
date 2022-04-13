@@ -32,8 +32,8 @@ import UnfoldMoreIcon from "@material-ui/icons/UnfoldMore";
 import DeleteDialogForm from "./DeleteDialogForm";
 import AddFormDialog from "./AddFormDialog";
 import EditDialogForm from "./EditDialogForm";
-import { SERVER_URL, ROLL_NUMBER } from "../utils/constants";
-import { useCallback } from "react";
+import { SERVER_URL } from "../utils/constants";
+// import { useCallback } from "react";
 import AdvanceSearch from "./AdvanceSearch";
 import { RowSelectContext } from "../contexts/RowSelectContext";
 import AnalyticsView from "./AnalyticsView";
@@ -541,10 +541,9 @@ export default function InvoicePanelTable() {
         <Grid className={classes.infiniteScrollGrid} xs={12}>
           <TableContainer className={classes.tablecontainer} id="scrollableDiv">
             <Table
-              className={classes.table}
               stickyHeader
               aria-label="sticky table"
-              className={classes.root}
+              className={`${classes.table} ${classes.root}`}
               size={"small"}
             >
               <TableHead>
@@ -630,26 +629,26 @@ export default function InvoicePanelTable() {
                       <TableCell align="left">{row.business_code}</TableCell>
                       <TableCell align="left">{row.cust_number}</TableCell>
                       <TableCell align="left">
-                        {typeof row.clear_date == "object"
-                          ? `${row.clear_date.year}-${row.clear_date.month}-${row.clear_date.day}`
-                          : "-"}
+                        {row.clear_date == null
+                          ? "-"
+                          : `${row.clear_date.year}-${row.clear_date.month}-${row.clear_date.day}`}
                       </TableCell>
                       <TableCell align="left">{row.business_year}</TableCell>
                       <TableCell align="left">{row.doc_id}</TableCell>
                       <TableCell align="left">
-                        {typeof row.posting_date == "object"
-                          ? `${row.posting_date.year}-${row.posting_date.month}-${row.posting_date.day}`
-                          : "-"}
+                        {row.posting_date == null
+                          ? "-"
+                          : `${row.posting_date.year}-${row.posting_date.month}-${row.posting_date.day}`}
                       </TableCell>
                       <TableCell align="left">
-                        {typeof row.document_create_date == "object"
-                          ? `${row.document_create_date.year}-${row.document_create_date.month}-${row.document_create_date.day}`
-                          : "-"}
+                        {row.document_create_date == null
+                          ? "-"
+                          : `${row.document_create_date.year}-${row.document_create_date.month}-${row.document_create_date.day}`}
                       </TableCell>
                       <TableCell align="left">
-                        {typeof row.due_in_date == "object"
-                          ? `${row.due_in_date.year}-${row.due_in_date.month}-${row.due_in_date.day}`
-                          : "-"}
+                        {row.due_in_date == null
+                          ? "-"
+                          : `${row.due_in_date.year}-${row.due_in_date.month}-${row.due_in_date.day}`}
                       </TableCell>
                       <TableCell align="left">{row.invoice_currency}</TableCell>
                       <TableCell align="left">{row.document_type}</TableCell>
@@ -658,9 +657,9 @@ export default function InvoicePanelTable() {
                         {row.total_open_amount}
                       </TableCell>
                       <TableCell align="left">
-                        {typeof row.document_create_date == "object"
-                          ? `${row.document_create_date.year}-${row.document_create_date.month}-${row.document_create_date.day}`
-                          : "-"}
+                        {row.document_create_date == null
+                          ? "-"
+                          : `${row.document_create_date.year}-${row.document_create_date.month}-${row.document_create_date.day}`}
                       </TableCell>
                       <TableCell align="left">
                         {row.cust_payment_terms}

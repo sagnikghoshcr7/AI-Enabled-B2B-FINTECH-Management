@@ -2,11 +2,15 @@ import React from "react";
 import "./App.css";
 import theme from "../src/utils/theme";
 import { makeStyles } from "@material-ui/core";
-import CollectorDashboard from "../src/views/CollectorDashboard";
-import { BrowserRouter as Router, Switch, Route, Link, Routes } from "react-router-dom";
-// import { BrowserRouter, Routes, Route, Link, Outlet } from "react-router-dom";
-import { ROLL_NUMBER } from "../src/utils/constants";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link,
+  Routes,
+} from "react-router-dom";
 import InvoiceDashboard from "./views/InvoiceDashboard";
+
 
 const useStyles = makeStyles((theme) => ({
   "@global": {
@@ -36,23 +40,12 @@ const useStyles = makeStyles((theme) => ({
     width: 100,
   },
 }));
+
 const App = () => {
-  // console.log('theme', theme);
-  // const classes = useStyles();
   return (
-    // <div className={classes.mainBackground}>
-    // <Router basename={`/${ROLL_NUMBER}`}>
-    //   <Route exact path="/" component={InvoiceDashboard} />
-    // </Router>
-    // </div>
-    // <Routes>
-    //   <Router>
-    //     <Route exact path="/" component={InvoiceDashboard} />
-    //   </Router>
-    // </Routes>
-      <Routes>
-        <Route path="/" element={<InvoiceDashboard />} />
-      </Routes>
+    <Routes>
+      <Route path="/" element={<InvoiceDashboard />} />
+    </Routes>
   );
 };
 

@@ -317,7 +317,7 @@ export default function InvoicePanelTable() {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
-        // successNotify();
+        successNotify();
       })
       .catch(function (error) {
         console.log(error);
@@ -370,7 +370,8 @@ export default function InvoicePanelTable() {
     setRowCustNo("");
     setAdvBusinessYear("");
     setRowFirstCount(0);
-    // displayData();
+    displayData();
+    // window.location.reload();
   };
 
   // for selecting all checkboxes

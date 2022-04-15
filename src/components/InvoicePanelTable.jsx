@@ -33,11 +33,14 @@ import DeleteDialogForm from "./DeleteDialogForm";
 import AddFormDialog from "./AddFormDialog";
 import EditDialogForm from "./EditDialogForm";
 import { SERVER_URL } from "../utils/constants";
-// import { useCallback } from "react";
 import AdvanceSearch from "./AdvanceSearch";
 import { RowSelectContext } from "../contexts/RowSelectContext";
 import AnalyticsView from "./AnalyticsView";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
+toast.configure();
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -181,6 +184,19 @@ export default function InvoicePanelTable() {
 
   const { rowSelectArr, setRowSelectArr } = useContext(RowSelectContext);
 
+  const successNotify = () => {
+    toast.success("Predicted Data Populated Successfully", {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "dark",
+      progress: undefined,
+    });
+  };
+
   const rowCountOptions = [5, 10, 20];
 
   const rowCountHandleClick = (event) => {
@@ -296,6 +312,7 @@ export default function InvoicePanelTable() {
     axios(config)
       .then(function (response) {
         console.log(JSON.stringify(response.data));
+        // successNotify();
       })
       .catch(function (error) {
         console.log(error);
@@ -437,6 +454,9 @@ export default function InvoicePanelTable() {
     setRowFirstCount(rowFirstCount + rowCountOptions[selectedRowIndex]);
     displayData();
   };
+
+ 
+
 
   return (
     <div className={classes.main}>
@@ -605,13 +625,10 @@ export default function InvoicePanelTable() {
                   return (
                     <TableRow
                       key={row.sl_no}
-                      style={
-                        isItemSelected
-                          ? { background: "#2A5368" }
-                          : index % 2
-                          ? { background: "#283A46" }
-                          : { background: "#273D49CC" }
-                      }
+                      style={{
+                        border: "1px solid white",
+                          backgroundColor: isItemSelected ? "#2A5368" : index % 2 ? "#283A46" : "#273D49CC",
+                      }}
                       onClick={(event) => handleClick(event, row.sl_no)}
                       aria-checked={isItemSelected}
                       tabIndex={-1} // to set table header tabIndex as -1
@@ -625,50 +642,50 @@ export default function InvoicePanelTable() {
                         />
                       </TableCell>
 
-                      <TableCell align="left">{row.sl_no}</TableCell>
-                      <TableCell align="left">{row.business_code}</TableCell>
-                      <TableCell align="left">{row.cust_number}</TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">{row.sl_no}</TableCell>
+                      <TableCell align="center">{row.business_code}</TableCell>
+                      <TableCell align="center">{row.cust_number}</TableCell>
+                      <TableCell align="center">
                         {row.clear_date == null
                           ? "-"
                           : `${row.clear_date.year}-${row.clear_date.month}-${row.clear_date.day}`}
                       </TableCell>
-                      <TableCell align="left">{row.business_year}</TableCell>
-                      <TableCell align="left">{row.doc_id}</TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">{row.business_year}</TableCell>
+                      <TableCell align="center">{row.doc_id}</TableCell>
+                      <TableCell align="center">
                         {row.posting_date == null
                           ? "-"
                           : `${row.posting_date.year}-${row.posting_date.month}-${row.posting_date.day}`}
                       </TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">
                         {row.document_create_date == null
                           ? "-"
                           : `${row.document_create_date.year}-${row.document_create_date.month}-${row.document_create_date.day}`}
                       </TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">
                         {row.due_in_date == null
                           ? "-"
                           : `${row.due_in_date.year}-${row.due_in_date.month}-${row.due_in_date.day}`}
                       </TableCell>
-                      <TableCell align="left">{row.invoice_currency}</TableCell>
-                      <TableCell align="left">{row.document_type}</TableCell>
-                      <TableCell align="left">{row.posting_id}</TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">{row.invoice_currency}</TableCell>
+                      <TableCell align="center">{row.document_type}</TableCell>
+                      <TableCell align="center">{row.posting_id}</TableCell>
+                      <TableCell align="center">
                         {row.total_open_amount}
                       </TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">
                         {row.document_create_date == null
                           ? "-"
                           : `${row.document_create_date.year}-${row.document_create_date.month}-${row.document_create_date.day}`}
                       </TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">
                         {row.cust_payment_terms}
                       </TableCell>
-                      <TableCell align="left">{row.invoice_id}</TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">{row.invoice_id}</TableCell>
+                      <TableCell align="center">
                         {row.predicted == null ? "-" : row.predicted}
                       </TableCell>
-                      <TableCell align="left">
+                      <TableCell align="center">
                         {row.aging_bucket == null ? "-" : row.aging_bucket}
                       </TableCell>
                     </TableRow>

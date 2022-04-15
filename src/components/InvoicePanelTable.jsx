@@ -169,6 +169,7 @@ export default function InvoicePanelTable() {
   const [tempSelectedRowIndex, setTempSelectedRowIndex] = useState(1);
   const [rowOffset, SetRowOffset] = useState(0);
   const [rowSortDesc, setRowSortDesc] = useState(0);
+  const [rowSortTrigger, setRowSortTrigger] = useState(false);
   const [rowFirstCount, setRowFirstCount] = useState(0);
   const [rowCustNo, setRowCustNo] = useState("");
   const [viewCircularProgress, setViewCircularProgress] = useState(true);
@@ -202,6 +203,10 @@ export default function InvoicePanelTable() {
   const rowCountHandleClick = (event) => {
     setAnchorEl(event.currentTarget);
   };
+
+  useEffect(() => {
+    displayData();
+  }, [rowSortDesc]);
 
   useEffect(() => {
     setSelectedRowIndex(tempSelectedRowIndex);
@@ -365,7 +370,7 @@ export default function InvoicePanelTable() {
     setRowCustNo("");
     setAdvBusinessYear("");
     setRowFirstCount(0);
-    displayData();
+    // displayData();
   };
 
   // for selecting all checkboxes
@@ -444,15 +449,17 @@ export default function InvoicePanelTable() {
   }
 
   const goPreviousRows = () => {
+    // console.log("<-", rowOffset, selectedRowIndex);
     SetRowOffset(rowOffset - rowCountOptions[selectedRowIndex]);
     setRowFirstCount(rowFirstCount - rowCountOptions[selectedRowIndex]);
-    displayData();
+    // displayData();
   };
 
   const goNextRows = () => {
+    // console.log("->", rowOffset, selectedRowIndex);
     SetRowOffset(rowOffset + rowCountOptions[selectedRowIndex]);
     setRowFirstCount(rowFirstCount + rowCountOptions[selectedRowIndex]);
-    displayData();
+    // displayData();
   };
 
  

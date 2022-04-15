@@ -194,7 +194,7 @@ export default function AdvanceSearch({ displayData, setAdvSearchParams }) {
           </Typography>
         </DialogTitle>
         <DialogContent dividers>
-          <Grid container spacing={4} direction="row">
+          <Grid container item spacing={4} direction="row">
             <Grid item>
               <TextField
                 label="Document Id"
@@ -242,7 +242,7 @@ export default function AdvanceSearch({ displayData, setAdvSearchParams }) {
             classes={{ containedPrimary: classes.primary }}
             variant="contained"
             size="small"
-            color="#273D49CC"
+            // color="#273D49CC"
             className={classes.editButtons}
             onClick={(event) => {
               event.preventDefault();
@@ -261,7 +261,7 @@ export default function AdvanceSearch({ displayData, setAdvSearchParams }) {
           </Button>
           <Button
             variant="contained"
-            color="#273D49CC"
+            // color="#273D49CC"
             size="small"
             onClick={handleClose}
             className={classes.editButtons}

@@ -203,7 +203,7 @@ export default function DeleteDialogForm({ displayData, countTotalData }) {
         <DialogActions>
           <Button
             variant="contained"
-            color="#273D49CC"
+            // color="#273D49CC"
             size="small"
             onClick={handleClose}
             className={classes.deleteButtons}
@@ -221,7 +221,7 @@ export default function DeleteDialogForm({ displayData, countTotalData }) {
             classes={{ containedPrimary: classes.primary }}
             variant="contained"
             size="small"
-            color="#273D49CC"
+            // color="#273D49CC"
             className={classes.deleteButtons}
             onClick={(event) => {
               event.preventDefault();

@@ -232,7 +232,7 @@ export default function EditDialogForm({ displayData }) {
           </Typography>
         </DialogTitle>
         <DialogContent dividers>
-          <Grid container spacing={2} direction="row">
+          <Grid container item spacing={2} direction="row">
             <Grid item>
               <TextField
                 label="Business Code"

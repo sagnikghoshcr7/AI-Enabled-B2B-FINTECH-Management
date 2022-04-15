@@ -169,7 +169,7 @@ export default function InvoicePanelTable() {
   const [tempSelectedRowIndex, setTempSelectedRowIndex] = useState(1);
   const [rowOffset, SetRowOffset] = useState(0);
   const [rowSortDesc, setRowSortDesc] = useState(0);
-  const [rowSortTrigger, setRowSortTrigger] = useState(false);
+  // const [rowSortTrigger, setRowSortTrigger] = useState(false);
   const [rowFirstCount, setRowFirstCount] = useState(0);
   const [rowCustNo, setRowCustNo] = useState("");
   const [viewCircularProgress, setViewCircularProgress] = useState(true);
@@ -463,25 +463,21 @@ export default function InvoicePanelTable() {
     // displayData();
   };
 
- 
-
-
   return (
     <div className={classes.main}>
       <Paper elevation={3} className={classes.paper}>
-        <Grid xs={12}>
+        <Grid item xs={12}>
           <Grid
             container
             direction={matchesSM ? "column" : "row"}
-            justify="space around"
+            justifyContent="space-around"
             className={classes.header}
-            variant="outlined "
+            variant="outlined"
           >
             <Grid
               item
               xs={4}
-              direction="row"
-              style={{ display: "flex", paddingBottom: matchesSM ? "2vh" : 0 }}
+              style={{ display: "flex", flexDirection: 'row', paddingBottom: matchesSM ? "2vh" : 0 }}
             >
               <Button
                 classes={{ containedPrimary: classes.primary }}
@@ -509,9 +505,10 @@ export default function InvoicePanelTable() {
             <Grid
               item
               xs={3}
-              direction="row"
+              // direction="row"
               style={{
                 display: "flex",
+                flexDirection: 'row',
                 justifyContent: "center",
                 paddingBottom: matchesSM ? "2vh" : 0,
               }}
@@ -529,9 +526,9 @@ export default function InvoicePanelTable() {
               <Paper
                 component="form"
                 className={classes.searchpaper}
-                alignItems="center"
                 style={{
                   width: matchesSM ? "70vw" : "15vw",
+                  alignItems: 'center'
                 }}
               >
                 <InputBase
@@ -553,8 +550,12 @@ export default function InvoicePanelTable() {
               direction="row"
               item
               xs={5}
-              justify="space-between"
-              style={{ display: "flex", paddingBottom: matchesSM ? "2vh" : 0 }}
+              justifyContent="space-between"
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                paddingBottom: matchesSM ? "2vh" : 0,
+              }}
             >
               <AddFormDialog displayData={displayData} />
               <EditDialogForm displayData={displayData} />
@@ -566,7 +567,7 @@ export default function InvoicePanelTable() {
           </Grid>
         </Grid>
 
-        <Grid className={classes.infiniteScrollGrid} xs={12}>
+        <Grid item className={classes.infiniteScrollGrid} xs={12}>
           <TableContainer className={classes.tablecontainer} id="scrollableDiv">
             <Table
               stickyHeader
@@ -635,7 +636,11 @@ export default function InvoicePanelTable() {
                       key={row.sl_no}
                       style={{
                         border: "1px solid white",
-                          backgroundColor: isItemSelected ? "#2A5368" : index % 2 ? "#283A46" : "#273D49CC",
+                        backgroundColor: isItemSelected
+                          ? "#2A5368"
+                          : index % 2
+                          ? "#283A46"
+                          : "#273D49CC",
                       }}
                       onClick={(event) => handleClick(event, row.sl_no)}
                       aria-checked={isItemSelected}
@@ -675,7 +680,9 @@ export default function InvoicePanelTable() {
                           ? "-"
                           : `${row.due_in_date.year}-${row.due_in_date.month}-${row.due_in_date.day}`}
                       </TableCell>
-                      <TableCell align="center">{row.invoice_currency}</TableCell>
+                      <TableCell align="center">
+                        {row.invoice_currency}
+                      </TableCell>
                       <TableCell align="center">{row.document_type}</TableCell>
                       <TableCell align="center">{row.posting_id}</TableCell>
                       <TableCell align="center">

@@ -22,6 +22,7 @@ const useStyles = makeStyles({
     letterSpacing: "0px",
     opacity: 1,
     marginLeft: "2.5vw",
+    marginTop: "0.5vh",
     fontSize: "1.5rem",
     widht: "25vw",
     height: "5vh",

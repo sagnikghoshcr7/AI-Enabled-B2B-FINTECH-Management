@@ -30,12 +30,3 @@ export default createTheme({
     }
 }
 });
-
-
-
-// const theme = createMuiTheme({
-//   palette: {
-//     primary: lightBlue,
-//   },
-  
-// });

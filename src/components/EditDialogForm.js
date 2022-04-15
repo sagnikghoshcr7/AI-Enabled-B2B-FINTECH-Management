@@ -237,7 +237,7 @@ export default function EditDialogForm({ displayData }) {
           </Typography>
         </DialogTitle>
         <DialogContent dividers>
-          <Grid container spacing={1} direction="row">
+          <Grid container item spacing={1} direction="row">
             <Grid item>
               <TextField
                 label="Invoice Currency"
@@ -265,7 +265,7 @@ export default function EditDialogForm({ displayData }) {
             classes={{ containedPrimary: classes.primary }}
             variant="contained"
             size="small"
-            color="#273D49CC"
+            // color="#273D49CC"
             className={classes.editButtons}
             onClick={(event) => {
               event.preventDefault();
@@ -283,7 +283,7 @@ export default function EditDialogForm({ displayData }) {
           </Button>
           <Button
             variant="contained"
-            color="#273D49CC"
+            // color="#273D49CC"
             size="small"
             onClick={handleClose}
             className={classes.editButtons}

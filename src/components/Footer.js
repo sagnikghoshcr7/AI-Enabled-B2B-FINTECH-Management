@@ -1,6 +1,5 @@
 import React from "react";
-import Paper from "@material-ui/core/Paper";
-import theme, { pxToRem } from "../utils/theme";
+import { pxToRem } from "../utils/theme";
 import { withStyles } from "@material-ui/core/styles";
 import { Typography, Grid } from "@material-ui/core";
 
@@ -28,15 +27,13 @@ const styles = (theme) => ({
     color: "white",
   },
 });
-function Footer(props) {
-  const { classes } = props;
+function Footer() {
   return (
     <Grid
       item
       xs={12}
       style={{
         position: "fixed",
-        // left: '0',
         bottom: "0",
         display: "flex",
         marginRight: "5px",

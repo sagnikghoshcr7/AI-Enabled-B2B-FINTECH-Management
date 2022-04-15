@@ -5,8 +5,8 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
 import theme from "../src/utils/theme";
-import { withStyles, MuiThemeProvider } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
+
 ReactDOM.render(
   <ThemeProvider theme={theme}>
     <BrowserRouter>

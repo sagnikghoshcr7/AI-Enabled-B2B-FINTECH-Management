@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import axios from "axios";
 import qs from "qs";
@@ -10,10 +10,13 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import InputLabel from "@material-ui/core/InputLabel";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
+import { toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { SERVER_URL } from "../utils/constants";
+
+toast.configure();
 
 const styles = (theme) => ({
   root: {
@@ -30,7 +33,7 @@ const styles = (theme) => ({
 
 const useStyles = makeStyles((theme) => ({
   add_main_btn: {
-    marginLeft: theme.spacing(1),
+    // marginLeft: theme.spacing(1),
     width: "10vw",
     border: `1px solid ${theme.palette.secondary.main}`,
     color: "#fff",
@@ -136,7 +139,6 @@ export default function EditDialogForm({ displayData }) {
   const [addBusinessCode, setAddBusinessCode] = useState("");
   const [addCustomerNo, setAddCustomerNo] = useState("");
   const [addClearDate, setAddClearDate] = useState("");
-  // const [addClearDateFmt, setAddClearDateFmt] = useState("");
   const [addBusinessYear, setAddBusinessYear] = useState("");
   const [addDocumentId, setAddDocumentId] = useState("");
   const [addPostingDate, setAddPostingDate] = useState("");
@@ -150,17 +152,38 @@ export default function EditDialogForm({ displayData }) {
   const [addCustomerPaymentTerms, setAddCustomerPaymentTerms] = useState("");
   const [addInvoiceId, setAddInvoiceId] = useState("");
 
+  const successNotify = () => {
+    toast.success("Item Added Successfully", {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "dark",
+      progress: undefined,
+    });
+  };
+
+  const errorNotify = () => {
+    toast.error("Item Not Added", {
+      position: "bottom-right",
+      autoClose: 3000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      theme: "dark",
+      progress: undefined,
+    });
+  };
+
   const handleClickOpen = () => {
     setOpen(true);
   };
   const handleClose = () => {
     setOpen(false);
   };
-
-  // useEffect(() => {
-  //   console.log("a -> ", addBusinessCode);
-  //   console.log("b -> ", addClearDate);
-  // });
 
   const addData = (e) => {
     var data = qs.stringify({
@@ -199,9 +222,11 @@ export default function EditDialogForm({ displayData }) {
       .then(function (response) {
         console.log(JSON.stringify(response.data));
         displayData();
+        successNotify();
       })
       .catch(function (error) {
         console.log(error);
+        errorNotify();
       });
   };
 

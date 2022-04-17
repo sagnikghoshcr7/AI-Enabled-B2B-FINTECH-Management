@@ -107,5 +107,4 @@ export const headCells = [
     disablePadding: false,
     label: "Aging Bucket",
   },
-  
 ];

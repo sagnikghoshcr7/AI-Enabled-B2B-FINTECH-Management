@@ -527,7 +527,7 @@ export default function InvoicePanelTable() {
                 component="form"
                 className={classes.searchpaper}
                 style={{
-                  width: matchesSM ? "70vw" : "15vw",
+                  width: matchesSM ? "20vw" : "15vw",
                   alignItems: 'center'
                 }}
               >

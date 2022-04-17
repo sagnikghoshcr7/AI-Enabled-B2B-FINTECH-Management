@@ -3,7 +3,6 @@ import CompanyLogo from "../assets/companyLogo.svg";
 import Logo from "../assets/logo.svg";
 import React from "react";
 
-
 const useStyles = makeStyles({
   main: {
     padding: "5vh 0",
@@ -49,30 +48,24 @@ const useStyles = makeStyles({
 const Header = () => {
   const classes = useStyles();
   return (
-      <div className={classes.main}>
-        <Grid container>
-          <Grid container item xs={12}>
-            <Grid item xs={4}>
-              <img
-                src={CompanyLogo}
-                alt="companylogo"
-                className={classes.comLogo}
-              />
-              <h4 className={classes.companyName}>
-                ABC Products
-              </h4>
-            </Grid>
-            <Grid item xs={4} style={{ textAlign: "center" }}>
-              <img
-                src={Logo}
-                alt="highradius-logo"
-                className={classes.hrcLogo}
-              />
-            </Grid>
-            <Grid item xs={4}></Grid>
+    <div className={classes.main}>
+      <Grid container>
+        <Grid container item xs={12}>
+          <Grid item xs={4}>
+            <img
+              src={CompanyLogo}
+              alt="companylogo"
+              className={classes.comLogo}
+            />
+            <h4 className={classes.companyName}>ABC Products</h4>
           </Grid>
+          <Grid item xs={4} style={{ textAlign: "center" }}>
+            <img src={Logo} alt="highradius-logo" className={classes.hrcLogo} />
+          </Grid>
+          <Grid item xs={4}></Grid>
         </Grid>
-      </div>
+      </Grid>
+    </div>
   );
 };
 

@@ -10,7 +10,7 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import { toast } from "react-toastify";
+import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { SERVER_URL } from "../utils/constants";
 import { RowSelectContext } from "../contexts/RowSelectContext";
@@ -106,7 +106,7 @@ export default function DeleteDialogForm({ displayData, countTotalData }) {
       draggable: true,
       theme: "dark",
       progress: undefined,
-      limit: 1
+      limit: 1,
     });
   };
 
@@ -149,7 +149,6 @@ export default function DeleteDialogForm({ displayData, countTotalData }) {
         console.log(JSON.stringify(response.data));
         displayData();
         countTotalData();
-        successNotify();
       })
       .catch(function (error) {
         console.log(error);
@@ -163,10 +162,12 @@ export default function DeleteDialogForm({ displayData, countTotalData }) {
 
   const handleDelete = (e) => {
     rowSelectArr.map((rowNo) => helperDelete(rowNo));
+    successNotify();
   };
 
   return (
     <div>
+    {/*<ToastContainer limit={1} />*/}
       <Button
         variant="outlined"
         color="primary"

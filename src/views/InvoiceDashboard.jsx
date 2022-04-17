@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { makeStyles } from "@material-ui/core";
 
 import Header from "../components/Header";
-import InvoicePanelTable from "./../components/InvoicePanelTable";
+import InvoicePanelTable from "../components/InvoicePanelTable";
 import "../styles.css";
 import Footer from "../components/Footer";
 
@@ -13,15 +13,6 @@ import { GlobalStyles } from "../utils/GlobalStyles";
 import { lightTheme, darkTheme } from "../utils/stTheme";
 import Brightness3Icon from "@material-ui/icons/Brightness3";
 import WbSunnyIcon from "@material-ui/icons/WbSunny";
-import { createGlobalStyle } from "styled-components";
-
-const GlobalStyle = createGlobalStyle`
-body {
-  background: ${({ theme }) => theme.body};
-  color: ${({ theme }) => theme.text};
-  transition: all 0.50s linear;
-}
-`;
 
 const useStyles = makeStyles({
   mainDashboard: {
@@ -48,7 +39,10 @@ const InvoiceDashboard = () => {
       <div className={classes.mainDashboard}>
         <RowSelectContext.Provider value={{ rowSelectArr, setRowSelectArr }}>
           <Header />
-          <div style={{position: 'absolute',top: '6vh', right: '5vw'}} onClick={() => setIsDarkMode(!isDarkMode)}>
+          <div
+            style={{ position: "absolute", top: "6vh", right: "5vw" }}
+            onClick={() => setIsDarkMode(!isDarkMode)}
+          >
             {isDarkMode === true ? (
               <WbSunnyIcon
                 style={{

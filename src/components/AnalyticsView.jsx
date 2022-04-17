@@ -238,7 +238,7 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
             {
               label: "Total Open Amount (Scale = 1/70000)",
               data: response.data.map((data) => {
-                return (data["total_open_amount"])/70000;
+                return data["total_open_amount"] / 70000;
               }),
               backgroundColor: "rgba(255, 99, 132, 0.5)",
             },
@@ -259,16 +259,16 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
 
   const getPieChartData = (e) => {
     var data = qs.stringify({
-      'invoice_curr': invoiceCurrencyStr
+      invoice_curr: invoiceCurrencyStr,
     });
 
     var config = {
-      method: 'post',
+      method: "post",
       url: SERVER_URL + "hrc/api/PieChart",
-      headers: { 
-        'Content-Type': 'application/x-www-form-urlencoded'
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
       },
-      data : data
+      data: data,
     };
 
     axios(config)
@@ -514,7 +514,7 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
         </DialogTitle>
         <DialogContent dividers>
           <Grid container style={{ display: "flex", justifyContent: "center" }}>
-            <Grid item style={{width: '40vw', paddingBottom: '7vh'}}>
+            <Grid item style={{ width: "40vw", paddingBottom: "7vh" }}>
               <Bar options={options} data={analyticstData} />
             </Grid>
             <Grid item>

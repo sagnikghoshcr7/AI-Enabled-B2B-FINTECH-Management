@@ -45,7 +45,12 @@ function Footer() {
       }}
     >
       <Typography style={{ color: "white" }}>
-        <a href={'https://www.google.com'}><span style={{color: '#15AEF2', textDecoration: 'underline'}}>Privacy Policy</span></a> | © 2022 HighRadius Corporation. All rights reserved.
+        <a href={"https://www.google.com"}>
+          <span style={{ color: "#15AEF2", textDecoration: "underline" }}>
+            Privacy Policy
+          </span>
+        </a>{" "}
+        | © 2022 HighRadius Corporation. All rights reserved.
       </Typography>
     </Grid>
   );

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { withStyles, makeStyles } from "@material-ui/core/styles";
 import Button from "@material-ui/core/Button";
 import Dialog from "@material-ui/core/Dialog";
@@ -8,8 +8,6 @@ import MuiDialogActions from "@material-ui/core/DialogActions";
 import IconButton from "@material-ui/core/IconButton";
 import CloseIcon from "@material-ui/icons/Close";
 import Typography from "@material-ui/core/Typography";
-import EditIcon from "@material-ui/icons/Edit";
-import InputLabel from "@material-ui/core/InputLabel";
 import Grid from "@material-ui/core/Grid";
 import TextField from "@material-ui/core/TextField";
 import {
@@ -168,8 +166,6 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
   const classes = useStyles();
   const [formOpen, setFormOpen] = useState(false);
   const [graphsOpen, setGraphsOpen] = useState(false);
-  // const [piekeysArray, setPiekeysArray] = useState([]);
-  // const [pieValuesArray, setPieValuesArray] = useState([]);
   const [fromClearDate, setFromClearDate] = useState("");
   const [toClearDate, setToClearDate] = useState("");
   const [fromDueDate, setFromDueDate] = useState("");
@@ -185,12 +181,16 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
   };
   const handleFormClose = () => {
     setFormOpen(false);
+  };
+
+  const handleSubmit = () => {
+    setFormOpen(false);
     getAnalyticsData();
     getPieChartData();
     setTimeout(() => {
       handleClickGraphsOpen();
-    }, 1000);
-  };
+    }, 500);
+  }
 
   const handleClickGraphsOpen = () => {
     setGraphsOpen(true);
@@ -198,10 +198,6 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
   const handleGraphsClose = () => {
     setGraphsOpen(false);
   };
-
-  // useEffect(() => {
-  //   getPieChartData();
-  // }, []);
 
   const getAnalyticsData = (e) => {
     var data = qs.stringify({
@@ -467,9 +463,7 @@ export default function AnalyticsView({ displayData, setAdvSearchParams }) {
             className={classes.analyticsButtons}
             onClick={(event) => {
               event.preventDefault();
-              // handleEdit();
-              // displayData();
-              handleFormClose();
+              handleSubmit();
             }}
             style={{
               color: "#FFFFFF",

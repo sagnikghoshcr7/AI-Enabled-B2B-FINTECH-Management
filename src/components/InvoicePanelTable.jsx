@@ -588,9 +588,6 @@ export default function InvoicePanelTable() {
                   {headCells.map((headCell, index) => (
                     <TableCell
                       key={headCell.id}
-                      // align={headCell.numeric ? "right" : "left"}
-                      // padding={headCell.disablePadding ? "none" : "default"}
-                      // style={{width: '6vw'}}
                       className={classes.tablecellbutton}
                       style={{ fontSize: "0.6rem" }}
                       padding={"none"}

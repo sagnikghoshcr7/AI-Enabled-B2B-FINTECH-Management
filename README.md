@@ -25,7 +25,8 @@ The B2B world operates differently from the B2C or C2C world. Businesses work wi
 ---
 
 ## 📊 Diagram
-![](https://github.com/sagnikghoshcr7/Draw.io/blob/master/hrc.drawio.png#gh-light-mode-only)
+![](https://github.com/sagnikghoshcr7/Draw.io/blob/master/hrc-ai-invoice/hrc.drawio.light.png#gh-light-mode-only)
+![](https://github.com/sagnikghoshcr7/Draw.io/blob/master/hrc-ai-invoice/hrc.drawio.dark.png#gh-dark-mode-only)
 
 ---
 

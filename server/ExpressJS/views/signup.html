@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link ref="stylesheet" href="../utils/form.css">
+    <title>login</title>
+</head>
+<body>
+    <body>
+        <div class="signup">
+    <h1>Signup</h1>
+    <form action="/signup" method="POST">
+        <label for="Name">
+            <h4>Name</h4>
+    <input id="usern" name="Username1" type="text" placeholder="Enter your Name">
+    
+        </label>
+        <label for="Email">
+            <h4>Email</h4>
+            <input id="usern" name="email1" type="text" minlength="6" placeholder="Enter your Email">
+                </label>
+                
+        <label for="Password">
+            <h4>Password</h4>
+            <input id="passw" name="Password1" type="password" minlength="6" maxlength="10" placeholder="Enter your Password">
+        </label>
+        <h4>Confirm Password</h4>
+        <label for=" confirm password">
+            <input id="cpassw" name="CPassword1" type="password" minlength="6" maxlength="10" placeholder="Confirm your Password">
+        </label>
+        <h4>Referral Code</h4>
+        <label for="Referral Code">
+            <input id="Refercode" name="referralcode" type="text" maxlength="5" placeholder="Referralcode">
+        </label>
+        <br><br>
+        <input type="submit" placeholder="Click Submit button"> 
+    </form>
+    <br><br>
+    <form action="/login">
+        <button>Login</button>
+    </form>
+        </div>
+</body>
+</html>

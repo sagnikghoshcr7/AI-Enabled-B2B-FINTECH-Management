@@ -1,126 +1,93 @@
-if (process.env.NODE_ENV !== 'production') {
-    require('dotenv').config()
-  }
-// Libraries
-const express = require('express');
-/*const passport = require('passport')
-*/
-const cors = require('cors')
+
+
+const dotenv = require('dotenv').config() 
+
+const express = require('express')
+const app = express()
 const bcrypt = require('bcrypt')
+const passport = require('passport')
+const flash = require('express-flash')
+const session = require('express-session')
+const methodOverride = require('method-override')
 
-//Variables
-/*const initializePassport = require('./passport-config');
-initializePassport(passport)
-*/
-const app =  express();
-var bodyParser = require('body-parser')
-const PORT = process.env.PORT || 5000;
-var urlencodedParser = bodyParser.urlencoded({ extended: false })
-
-
-app.use(cors());
-app.use(express.json())
-//Profile Login-Signup 
+const initializePassport = require('./passport-config')
+initializePassport(
+  passport,
+  email => users.find(user => user.email === email),
+  id => users.find(user => user.id === id)
+)
 
 const users = []
 
-app.get('/users', (req,res) => {
 
-    res.json(users);
 
+
+app.set('view-engine', 'ejs')
+app.use(express.urlencoded({ extended: false }))
+app.use(flash())
+
+const secret = process.env.SESSION_SECRET ;
+
+app.use(session({secret:secret, resave: false,
+  saveUninitialized: false}))
+
+app.use(passport.initialize())
+app.use(passport.session())
+app.use(methodOverride('_method'))
+
+app.get('/', checkAuthenticated, (req, res) => {
+  res.render('index.ejs', { name: req.user.name })
 })
-//Routes
 
-app.get('/', (req,res) =>{
-    res.sendFile('home.html' , {root:'./views'})
+app.get('/login', checkNotAuthenticated, (req, res) => {
+  res.render('login.ejs')
 })
 
-
-app.get('/login' , (req,res) =>{
-    res.sendFile('login.html' , {root:'./views'})
-})
-
-app.get('/signup', (req,res)=>{
-    res.sendFile('signup.html',{ root: './views'})
-})
-
-app.get('/users/loggedin', async(req,res)=>{
-    try{
-        res.sendFile('user.html', {root:'./views'})
-    }catch{
-res.sendStatus(500).send("Internal Server Error");
-    }
+app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
     
+  successRedirect: '/',
+  failureRedirect: '/login',
+  failureFlash: true
+}))
+
+app.get('/register', checkNotAuthenticated, (req, res) => {
+  res.render('register.ejs')
 })
 
-
-//Signup completes
-app.post('/signup', urlencodedParser , async(req,res)=>{
-    try{
-        const salt = await bcrypt.genSalt();
-        const User =  { name:req.body.Username1, password: await bcrypt.hash(req.body.Password1,salt) , email:req.body.email1 }
-        users.push(User);
-        console.log(User);
-        console.log(users.length)
-       /* res.redirect('/signup')
-        res.addListener("error", ()=>{
-            alert("Please Enter your details")
-        })
-    */
-    
-   res.redirect('/login');
-        res.sendStatus(200);
-    
-    }catch(error){
-    res.sendStatus(500).send("Internal Server Error");
-    }
-
-    
+app.post('/register', checkNotAuthenticated, async (req, res) => {
+  try {
+    const hashedPassword = await bcrypt.hash(req.body.password, 10)
+    users.push({
+      id: Date.now().toString(),
+      name: req.body.name,
+      email: req.body.email,
+      password: hashedPassword
+    })
+    console.log(users)
+    res.redirect('/login')
+  } catch {
+    res.redirect('/register')
+  }
 })
 
-//Redirect to the Profile if the password is correct
-app.post('/login', urlencodedParser , async(req,res)=>{
-
-    
-        try{
-            const logindetail = await req.body.Password01;
-            const email = req.body.email01;
-            for(let i=0; i<users.length; i++)
-            {
-                if(email===users[i].email)
-                {
-                    if(await bcrypt.compare(logindetail,users[0].password) && email===users[0].email)
-                    {
-                        res.redirect('/users/loggedin')
-                        res.sendStatus(200).send("Got it");
-                    }else{
-                        res.send("Wrong Password")
-                    }
-                }else{
-                    res.sendStatus(404).send("Not found")
-                }
-            }
-            
-        }catch(error){
-            res.sendStatus(500).send("error");
-        }
-    
-      
+app.delete('/logout', (req, res) => {
+  req.logOut()
+  res.redirect('/login')
 })
 
+function checkAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return next()
+  }
 
+  res.redirect('/login')
+}
 
-app.get('/users/loggedout', async(req,res) => {
-    try {
-        res.sendFile('home.html' , {root:'./views'})
-    } catch (error) {
-        
-    }
-   
-})
+function checkNotAuthenticated(req, res, next) {
+  if (req.isAuthenticated()) {
+    return res.redirect('/')
+  }
+  next()
+}
 
-
-//PORT
-app.listen(PORT,() =>{
-    console.log(`the server is running ${PORT}`)
-})
+app.listen(4500)

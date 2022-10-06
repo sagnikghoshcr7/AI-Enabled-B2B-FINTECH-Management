@@ -1,3 +1,7 @@
+
+
+
+
 <h1>Register hello</h1>
 <form action="/register" method="POST">
   <div>
@@ -12,6 +16,12 @@
     <label for="password">Password</label>
     <input type="password" id="password" name="password" required>
   </div>
+  <div>
+    <label for="password">Confirm Password</label>
+    <input type="password" id="cpassword" name="confirm-password" required>
+  </div>
+  <label for="text">Referral Code</label>
+    <input type="text" id="rcode" name="rcode" required>
   <button type="submit">Register</button>
 </form>
 <a href="/login">Login</a>

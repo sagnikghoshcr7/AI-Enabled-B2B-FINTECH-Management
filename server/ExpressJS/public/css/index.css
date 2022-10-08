@@ -1,0 +1,27 @@
+
+.logoutbtn{
+    position: relative;
+    top: 40%;
+    left: 49%;
+}
+
+
+
+.form{
+    color: white;
+    position: relative;
+    left: 40%;
+    border-radius: 10px;
+}
+
+.margin{
+    margin-top: 10px;
+    border-radius: 10px;
+    margin-bottom: 20px;
+    border: 0.01 solid black;
+}
+
+.link-btn{
+    color: black;
+    
+}

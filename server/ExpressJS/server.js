@@ -10,6 +10,10 @@ const session = require('express-session')
 const methodOverride = require('method-override')
 const User = require('./Models/user.js');
 
+
+
+app.use(express.static('public'))
+app.use('/css',express.static(__dirname + 'public/css'));
 const users = []
 
 mongoose.connect("mongodb://0.0.0.0:27017/UserData", {

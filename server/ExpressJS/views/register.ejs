@@ -1,27 +1,59 @@
 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/index.css">
+  <!-- Font Awesome -->
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
+rel="stylesheet"
+/>
+<!-- Google Fonts -->
+<link
+href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
+rel="stylesheet"
+/>
+<!-- MDB -->
+<link
+href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.css"
+rel="stylesheet"
+/>
+  <title>Document</title>
+</head>
+<body style="background-color:rgb(10,25,41);overflow-x: hidden;">
+  <h1 class="form margin">Sign up page!</h1>
+  <form class="form" action="/register" method="POST">
+    <div>
+      <label for="name">Name</label>
+      <input class="margin" type="text" id="name" name="name" required>
+    </div>
+    <div>
+      <label for="email">Email</label>
+      <input class="margin" type="email" id="email" name="email" required>
+    </div>
+    <div>
+      <label for="password">Password</label>
+      <input class="margin" type="password" id="password" name="password" required>
+    </div>
+    <div>
+      <label for="password">Confirm Password</label>
+      <input class="margin" type="password" id="cpassword" name="confirm-password" required>
+    </div>
+    <label for="text">Referral Code</label>
+      <input class="margin" type="text" id="rcode" name="rcode" required>
+      <br>
+    <button class="margin" type="submit">Register</button>
+  </form>
+  <button class="form"><a class="link-btn" href="/login">Login Page</a>  </button>
+<!-- MDB -->
+<script
+  type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"
+></script>
+</body>
+</html>
 
 
-
-<h1>Register hello</h1>
-<form action="/register" method="POST">
-  <div>
-    <label for="name">Name</label>
-    <input type="text" id="name" name="name" required>
-  </div>
-  <div>
-    <label for="email">Email</label>
-    <input type="email" id="email" name="email" required>
-  </div>
-  <div>
-    <label for="password">Password</label>
-    <input type="password" id="password" name="password" required>
-  </div>
-  <div>
-    <label for="password">Confirm Password</label>
-    <input type="password" id="cpassword" name="confirm-password" required>
-  </div>
-  <label for="text">Referral Code</label>
-    <input type="text" id="rcode" name="rcode" required>
-  <button type="submit">Register</button>
-</form>
-<a href="/login">Login</a>

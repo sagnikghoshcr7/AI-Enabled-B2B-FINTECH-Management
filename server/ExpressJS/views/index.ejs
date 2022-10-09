@@ -24,6 +24,15 @@ rel="stylesheet"
 </head>
 <body style="background-color:rgb(10,25,41);overflow-x: hidden;">
 <h1 class="form margin">Hi <%= name %></h1>
+<br>
+<form action="/edituserprofile" method="POST">
+  <button class="form" style="color:black;">Edit User Profile</button>
+</form>
+<br>
+<form action="/editpassword" method="POST">
+  <button class="form" style="color:black;">Edit Password</button>
+</form>
+<br>
 <form class="form" action="/logout?_method=DELETE" method="POST">
   <button class="margin" type="submit">Log Out</button>
 </form>

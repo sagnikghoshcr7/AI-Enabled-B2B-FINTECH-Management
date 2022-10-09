@@ -81,6 +81,23 @@ app.get('/register', checkNotAuthenticated, (req, res) => {
   
 })
 
+app.get('/edituserprofile',checkAuthenticated,(req,res)=>{
+  res.send('edit.ejs',{name:req.body.name});
+})
+
+
+app.post('/edituserprofile',checkAuthenticated,(req,res)=>{
+  res.send('editpass.ejs')
+})
+
+app.get('/editpassword',checkAuthenticated,(req,res)=>{
+  res.send('editpass.ejs');
+})
+
+app.post('/editpassword',checkAuthenticated,(req,res)=>{
+  res.send('editpass.ejs')
+})
+
 app.post('/register', checkNotAuthenticated, async (req, res) => {
   try {
     const hashedPassword = await bcrypt.hash(req.body.password, 10)

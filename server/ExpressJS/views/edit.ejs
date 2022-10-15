@@ -6,6 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
   <link rel="stylesheet" href="css/index.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300&display=swap" rel="stylesheet">
   <!-- Font Awesome -->
 <link
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -22,24 +25,26 @@ href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.css"
 rel="stylesheet"
 />
 </head>
-<body style="background-color:rgb(10,25,41);overflow-x: hidden;">
-<h1 class="form margin">Edit User Profile</h1>
+<body style="background-color:rgb(255, 255, 255);overflow-x: hidden;margin-top: 60px;font-family: 'Nunito Sans', sans-serif;color: white;">
+<img class="register" src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" alt="a">
 <br>
-<h1 class="form">Please Enter the new details</h1>
-<form class="form" action="/" method="POST">
-    <div>
+<h1 class="form">Enter the New details</h1>
+<br>
+<form class="form" action="/edituserprofile" method="POST">
+    
+  <div>
         <label for="name">Name</label>
-        <input class="margin" type="text" id="name" name="name" required>
+        <input class="margin" type="text" id="name" name="namenew" required>
       </div>
       <div>
         <label for="email">Email</label>
-        <input class="margin" type="email" id="email" name="email" required>
+        <input class="margin" type="email" id="email" name="emailnew" required>
       </div>
-      <button class="margin" type="submit">Save</button>
+      <button class="margin btndes" style="width: 100px; height: 40px;" type="submit">Save</button>
     </form>
 </form>
 <form action="/" method="GET">
-    <button class="form" style="color:black;">Back</button>
+    <button class="form btndes" style="color:rgb(255, 255, 255);width: 100px; height: 40px;">Back</button>
   </form>
 </body>
 </html>

@@ -1,13 +1,16 @@
 const LocalStrategy = require('passport-local').Strategy
 const bcrypt = require('bcrypt')
+const User = require('./Models/user.js');
 
-function initialize(passport, getUserByEmail, getUserById) {
-  const authenticateUser = async (email, password, done) => {
-    const user = getUserByEmail(email)
+async function initialize(passport, getUserByEmail, getUserById) {
+  const authenticateUser = async (emails, password, done) => {
+    const user = getUserByEmail(emails)
+    // const mongoid = await User.find({email:user}).exec();
+    // console.log(mongoid);
     if (user == null) {
       return done(null, false, { message: 'No user with that email' })
     }
-
+    console.log(password, user.password)
     try {
       if (await bcrypt.compare(password, user.password)) {
         return done(null, user)

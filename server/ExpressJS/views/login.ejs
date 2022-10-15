@@ -5,6 +5,10 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Document</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300&display=swap" rel="stylesheet">
+  
   <link rel="stylesheet" href="css/index.css">
   <!-- Font Awesome -->
 <link
@@ -22,8 +26,9 @@ href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.css"
 rel="stylesheet"
 />
 </head>
-<body style="background-color:rgb(10,25,41);overflow-x: hidden;">
-  <h1 class="form margin">Login</h1>
+<body style="background-color:rgb(255, 255, 255);overflow-x: hidden;margin-top: 120px;font-family: 'Nunito Sans', sans-serif;color: white;">
+<img class="register" src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" alt="a">
+  <h1 class="form">Login</h1>
   <form class="form" action="/login" method="POST">
     <div>
       <label for="email">Email</label>
@@ -33,9 +38,9 @@ rel="stylesheet"
       <label for="password">Password</label>
       <input class="margin" type="password" id="password" name="password" required>
     </div>
-    <button class="margin" type="submit">Login</button>
+    <button class="margin btndes" style="width: 100px; height: 40px;" type="submit">Login</button>
   </form>
- <button class="form"><a class="link-btn" href="/register">Register</a></button>
+ <button class="form btndes" style="width: 100px; height: 40px;"><a class="link-btn" style="color:white;" href="/register">Signup</a></button>
   
 </body>
 </html>

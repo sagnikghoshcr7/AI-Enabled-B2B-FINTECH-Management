@@ -22,16 +22,15 @@ href="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.css"
 rel="stylesheet"
 />
 </head>
-<body style="background-color:rgb(10,25,41);overflow-x: hidden;">
-<h1 class="form margin">Edit Password</h1>
-<br>
+<body style="background-color:rgb(255, 255, 255);overflow-x: hidden;">
 <h1 class="form">Please Enter the new password</h1>
-<form class="form" action="/" method="POST">
-      <button class="margin" type="submit">Save</button>
+<form class="form" action="/editpassword" method="POST">
+  <input class="margin" type="text" placeholder="Enter the new password" id="newpass" name="newpass">
+      <button class="margin btndes" type="submit">Save</button>
     </form>
 </form>
 <form action="/" method="GET">
-    <button class="form" style="color:black;">Back</button>
+    <button class="form btndes">Back</button>
   </form>
 </body>
 </html>

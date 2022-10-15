@@ -6,6 +6,11 @@
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <link rel="stylesheet" href="css/index.css">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@300&display=swap" rel="stylesheet">
+
   <!-- Font Awesome -->
 <link
 href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
@@ -23,32 +28,37 @@ rel="stylesheet"
 />
   <title>Document</title>
 </head>
-<body style="background-color:rgb(10,25,41);overflow-x: hidden;">
+<body style="background-color:rgb(255, 255, 255);overflow-x: hidden;margin-top: 60px;font-family: 'Nunito Sans', sans-serif;">
   <h1 class="form margin">Sign up page!</h1>
+
+    <img class="register" src="images/registerpage.webp" alt="">
+
+ 
   <form class="form" action="/register" method="POST">
-    <div>
-      <label for="name">Name</label>
-      <input class="margin" type="text" id="name" name="name" required>
-    </div>
-    <div>
+    
+      <label for="name padding">Name</label>
+      <input class="margin up" type="text" id="name" name="name" placeholder="Name" required>
+<br>
+    
       <label for="email">Email</label>
-      <input class="margin" type="email" id="email" name="email" required>
-    </div>
-    <div>
-      <label for="password">Password</label>
-      <input class="margin" type="password" id="password" name="password" required>
-    </div>
-    <div>
-      <label for="password">Confirm Password</label>
-      <input class="margin" type="password" id="cpassword" name="confirm-password" required>
-    </div>
-    <label for="text">Referral Code</label>
-      <input class="margin" type="text" id="rcode" name="rcode" required>
+      <input class="margin" type="email" id="email" name="email" placeholder="Email" required>
       <br>
-    <button class="margin" type="submit">Register</button>
+    
+      <label for="password">Password</label>
+      <input class="margin" type="password" id="password" name="password" placeholder="Password"required>
+      <br>
+    
+      <label for="password">Confirm Password</label>
+      <input class="margin" type="password" id="cpassword" name="confirm-password" placeholder="Confirm-Password" required>
+      <br>
+    <label for="text">Referral Code</label>
+      <input class="margin" type="text" id="rcode" name="rcode" placeholder="Referral Code(Optional)">
+      <br>
+    <button class="margin btndes" style="color: white; width: 100px; height: 40px;" type="submit">Submit</button>
   </form>
-  <button class="form"><a class="link-btn" href="/login">Login Page</a>  </button>
+  <button class="form btndes" ><a style="color: white; width: 100px; height: 40px;" class="link-btn" href="/login">Login Page</a>  </button>
 <!-- MDB -->
+
 <script
   type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mdb-ui-kit/5.0.0/mdb.min.js"

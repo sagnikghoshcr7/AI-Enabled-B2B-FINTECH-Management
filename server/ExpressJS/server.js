@@ -2,6 +2,7 @@ const mongoose = require('mongoose')
 const dotenv = require('dotenv').config() 
 const express = require('express')
 const app = express()
+var multer = require('multer');
 const PORT = process.env.PORT || 4500;
 const bcrypt = require('bcrypt')
 const passport = require('passport')
@@ -12,9 +13,26 @@ const User = require('./Models/user.js');
 
 
 
+// Require the cloudinary library
+const cloudinary = require('cloudinary').v2;
+
+// Return "https" URLs by setting secure: true
+cloudinary.config({
+  secure: true,
+  cloud_name: 'dg3ufgyhh',
+  api_key: '791971377994129',
+  api_secret: 'AyozMd6dlfHJI3_1OMPMuhrUfk4',
+  private_cdn: false,
+  secure_distribution: null,
+});
+
+
+
+// app.use
 app.use(express.static('public'))
 app.use('/css',express.static(__dirname + 'public/css'));
 app.use('/images',express.static(__dirname + 'public/images'));
+app.use('/uploads', express.static('uploads'));
 const users = []
 
 mongoose.connect("mongodb://0.0.0.0:27017/UserData", {
@@ -22,7 +40,7 @@ mongoose.connect("mongodb://0.0.0.0:27017/UserData", {
   useUnifiedTopology: true
 }, e => console.error(e));
 
-
+//mongo
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));
 db.once("open", function () {
@@ -83,6 +101,15 @@ app.get('/users', (req,res)=>{
   res.json(users)
 })
 
+app.get('/settings',(req,res)=>{
+  res.render('settings.ejs');
+})
+
+app.get('/profilepicupload',(req,res)=>{
+  res.render('profilepicupload.ejs');
+})
+
+
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
     
   successRedirect: '/',
@@ -103,12 +130,10 @@ app.get('/editpassword',checkAuthenticated,(req,res)=>{
 })
 
 app.post('/editpassword',checkAuthenticated,async(req,res)=>{
-  console.log(req.body.newpass)
   const newpassword = await bcrypt.hash(req.body.newpass, 10)
-  console.log(newpassword);
   res.redirect('/');
 const display = await User.findOneAndUpdate({id: req.user.id},{password:newpassword},{new: true}); 
-console.log(display);
+
 req.user.password = newpassword;
 })
 
@@ -179,10 +204,11 @@ try {
 
 const newname = req.body.namenew;
 const newemail = req.body.emailnew;
-const display = await User.findOneAndUpdate({id: req.user.id},{name:newname,email:newemail},{new: true}); 
+const country = req.body.country;
+const phoneNo = req.body.phnNo;
+const display = await User.findOneAndUpdate({id: req.user.id},{name:newname,email:newemail,country:country,phonenumber:phoneNo},{new: true});
 req.user.name = newname;
 req.user.email = newemail;
-console.log(display);
 res.redirect('/');
 next();
 } catch (error) {
@@ -190,6 +216,113 @@ next();
 }
   
 })
+
+var storage = multer.diskStorage({
+  destination: function (req, file, cb) {
+    cb(null, './uploads')
+  },
+  filename: function (req, file, cb) {
+    cb(null, file.originalname)
+  }
+})
+var upload = multer({ storage: storage })
+
+
+app.post('/profilepicupload', upload.single('path') , async (req,res)=>{
+try{
+ 
+  //image upload start
+ 
+  const uploadImage = async (imagePath) => {
+
+    // Use the uploaded file's name as the asset's public ID and 
+    // allow overwriting the asset with new versions
+    const options = {
+      use_filename: true,
+      unique_filename: false,
+      overwrite: true,
+    };
+  
+    try {
+      // Upload the image
+      const result = await cloudinary.uploader.upload(imagePath);
+      console.log(result.public_id);
+      return result.public_id;
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const getAssetInfo = async (publicId) => {
+
+    // Return colors in the response
+    const options = {
+      colors: true,
+    };
+
+    try {
+        // Get details about the asset
+        const result = await cloudinary.api.resource(publicId);
+        console.log(result);
+        return result.colors;
+        } catch (error) {
+        console.error(error);
+    }
+};
+
+const createImageTag = (publicId, ...colors) => {
+
+  // Set the effect color and background color
+  const [effectColor, backgroundColor] = colors;
+
+  // Create an image tag with transformations applied to the src URL
+  let imageTag = cloudinary.image(publicId, {
+    transformation: [
+      { width: 250, height: 250, gravity: 'faces', crop: 'thumb' },
+      { radius: 'max' },
+      { effect: 'outline:10', color: effectColor },
+      { background: backgroundColor },
+    ],
+  });
+  return imageTag;
+};
+(async () => {
+
+  // Set the image to upload
+  const realpath = req.file.path;
+  const imagePath = `${realpath}`;
+
+  // Upload the image
+  const publicId = await uploadImage(imagePath);
+
+  // Get the colors in the image
+  const colors = await getAssetInfo(publicId);
+
+  // Create an image tag, using two of the colors in a transformation
+  const imageTag = await createImageTag(publicId);
+
+  // Log the image tag to the console
+  console.log(imageTag);
+
+})();
+
+//image upload ends
+
+
+
+res.redirect('/');
+
+}catch(error)
+{
+  ;
+}
+})
+
+/////////////////////////
+// Uploads an image file
+/////////////////////////
+
+
 
 app.listen(PORT,()=>{
   console.log(`Server Running at ${PORT}`);

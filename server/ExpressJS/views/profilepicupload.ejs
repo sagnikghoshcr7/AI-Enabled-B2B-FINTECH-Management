@@ -27,22 +27,33 @@ rel="stylesheet"
 />
 </head>
 <body style="background-color:rgb(255, 255, 255);overflow-x: hidden;margin-top: 60px;font-family: 'Nunito Sans', sans-serif;color: white;">
-<h1 class="form margin">Settings</h1>
-<img class="register" src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" alt="a">
+<h1 class="form margin">Upload & Update Profile Photo </h1>
+
 <br>
-<form action="/edituserprofile" method="GET">
-  <button class="form btndes" style="width: 200px; height: 60px;">Options for alert notifications</button>
+<form method="POST" action="/profilepicupload" enctype="multipart/form-data">
+    <div>
+        <label>Upload profile picture</label>
+        <input class="form" type="file" name="path" required/>
+    </div>
+    <div>
+        <input class="form btndes" style="margin-top: 20px;" type="submit" value="Upload" />
+    </div>
 </form>
-<br>
-<form action="/editpassword" method="GET">
-  <button class="form btndes" style="width: 200px; height: 60px;">Theme color options</button>
+<h1 class="form margin" style="margin-top: 40px;">Upload KYC Documents</h1>
+<form method="POST" action="/KYC-upload" enctype="multipart/form-data">
+    <div>
+        <label >Upload KYC</label>
+        <input class="form" type="file" name="profile-file" required/>
+    </div>
+    <div >
+        <input class="form btndes" style="margin-top: 20px;" type="submit" value="Upload" />
+    </div>
 </form>
-<br>
-<form class="form" action="/logout?_method=DELETE" method="POST">
-  <button class="margin btndes" style="width: 200px; height: 40px;" type="submit">2FA options</button>
-</form>
+
+
+
 <form action="/" method="GET">
-    <button class="form btndes">Back</button>
+    <button class="form btndes" style="color:rgb(255, 255, 255);width: 100px; height: 40px; margin-top: 20px;">Go Back</button>
   </form>
 </body>
 </html>

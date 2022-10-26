@@ -1,3 +1,4 @@
+@import url('https://cdn-uicons.flaticon.com/uicons-bold-rounded/css/uicons-bold-rounded.css');
 
 .logoutbtn{
     position: relative;
@@ -5,6 +6,16 @@
     left: 49%;
 }
 
+.helpdesk_input{
+    display: block;
+    margin-top: 1em;
+    width: 60%;
+}
+
+.ticket-form{
+    height: 200px;
+    width: 800px;
+}
 
 .form{
     color: rgb(0, 0, 0);
@@ -15,12 +26,25 @@
     border-radius: 5px;
 }
 
+.issueform{
+    position: relative;
+    left: 21%;
+}
+
 .btndes{
     border: none;
     color: white;
  transition: all 1s;
     background-color: rgb(59,113,202);
 }
+
+.profilepic{
+    position: absolute;
+    left: 10%;
+    height: 200px;
+    width: 200px;
+}
+
 
 .btndes:hover{
     transform: scale(1.11);

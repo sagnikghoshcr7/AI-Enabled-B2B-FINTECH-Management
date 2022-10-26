@@ -24,7 +24,9 @@ const userSchema = new mongoose.Schema({
     country:{
         type:String,
         required:false,
-
+    },
+    imagepath:{
+        required:false,
     }
 })
 

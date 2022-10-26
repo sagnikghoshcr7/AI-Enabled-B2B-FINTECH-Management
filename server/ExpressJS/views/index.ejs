@@ -28,6 +28,8 @@ rel="stylesheet"
 </head>
 <body style="background-color:rgb(255, 255, 255);overflow-x: hidden;margin-top: 60px;font-family: 'Nunito Sans', sans-serif;color: white;">
 <h1 class="form margin">Hi <%= name %></h1>
+<img class="profilepic" src= "<%= userimage %>" ></img>
+
 <img class="register" src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.webp" alt="a">
 <br>
 <form action="/edituserprofile" method="GET">
@@ -45,6 +47,10 @@ rel="stylesheet"
 <form action="/settings" method="GET">
 <button class="form btndes" style="width: 100px; height: 60px;">Settings</button>
 </form>
+<br>
+<form action="/helpdesk" method="GET">
+  <button class="form btndes" style="width: 100px; height: 60px;">Create a ticket</button>
+  </form>
 <br>
 <form class="form" action="/logout?_method=DELETE" method="POST">
   <button class="margin btndes" style="width: 100px; height: 40px;" type="submit">Log Out</button>

@@ -10,6 +10,8 @@ const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
 const User = require('./Models/user.js');
+const Ticket = require('./Models/ticket.js');
+
 
 
 
@@ -31,9 +33,15 @@ cloudinary.config({
 // app.use
 app.use(express.static('public'))
 app.use('/css',express.static(__dirname + 'public/css'));
+app.use('/css',express.static(__dirname + 'public/assets/css'));
+app.use('/js',express.static(__dirname + 'public/assets/js'));
+app.use('/images',express.static(__dirname + 'public/assets/images'));
+app.use('/scss',express.static(__dirname + 'public/assets/scss'));
+app.use('/colors',express.static(__dirname + 'public/assets/colors'));
 app.use('/images',express.static(__dirname + 'public/images'));
 app.use('/uploads', express.static('uploads'));
 const users = []
+const tickets = []
 
 mongoose.connect("mongodb://0.0.0.0:27017/UserData", {
   useNewUrlParser: true,
@@ -48,25 +56,34 @@ db.once("open", function () {
 });
 
 
-
 // fetching mongo db data
 fetchdata();
 
 async function fetchdata()
 {
   const userData = await User.find().exec();
+  
   for(let i=0; i<userData.length; i++)
   {
     users.push(userData[i]);
     // console.log(users)
   }
- 
+
+  const ticketdata = await Ticket.find().exec();
+  
+  for(let i=0; i<ticketdata.length; i++)
+  {
+    tickets.push(ticketdata[i]);
+    // console.log(users)
+  }
+
 }
 
 // passport js
 
 const initializePassport = require('./passport-config');
 const user = require('./Models/user.js');
+const { realpath } = require('fs');
 initializePassport(
   passport,
   email => users.find(user => user.email === email),
@@ -88,27 +105,44 @@ app.use(methodOverride('_method'))
 
 
 // routes
-app.get('/', checkAuthenticated, (req, res) => {
-  res.render('index.ejs', { name: req.user.name })
-  // console.log(" current id " + req.user.id);
+
+app.get('/supportpage',(req,res)=>{
+  res.render('SupportPage.ejs');
 })
 
 app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('login.ejs')
 })
 
+app.get('/Home', (req,res)=>{
+  res.render('landingpage.ejs')
+})
+
+
+app.get('/', checkAuthenticated, async(req, res) => {
+  res.render('index.ejs', { name: req.user.name,userimage:req.user.imagepath})
+  // console.log(" current id " + req.user.id);
+})
+
 app.get('/users', (req,res)=>{
   res.json(users)
 })
 
-app.get('/settings',(req,res)=>{
-  res.render('settings.ejs');
+app.get('/ticket',(req,res)=>{
+  res.json(tickets);
+})
+
+app.get('/settings',checkAuthenticated,(req,res)=>{
+  res.render('settings.ejs',{ name: req.user.name});
 })
 
 app.get('/profilepicupload',(req,res)=>{
   res.render('profilepicupload.ejs');
 })
 
+app.get('/helpdesk', checkAuthenticated , (req,res)=>{
+  res.render('helpdesk.ejs');
+})
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
     
@@ -120,7 +154,6 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
 
 app.get('/register', checkNotAuthenticated, (req, res) => {
   res.render('register.ejs')
-  
 })
 
 
@@ -177,7 +210,7 @@ res.redirect('/login')
 
 app.delete('/logout', (req, res) => {
   req.logOut()
-  res.redirect('/login')
+  res.redirect('/Home')
 })
 
 function checkAuthenticated(req, res, next) {
@@ -210,7 +243,9 @@ const display = await User.findOneAndUpdate({id: req.user.id},{name:newname,emai
 req.user.name = newname;
 req.user.email = newemail;
 res.redirect('/');
+
 next();
+
 } catch (error) {
   res.sendStatus(500);
 }
@@ -228,7 +263,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 
-app.post('/profilepicupload', upload.single('path') , async (req,res)=>{
+app.post('/profilepicupload', upload.single('path'), async (req,res)=>{
 try{
  
   //image upload start
@@ -263,7 +298,8 @@ try{
     try {
         // Get details about the asset
         const result = await cloudinary.api.resource(publicId);
-        console.log(result);
+        console.log(result.secure_url);
+        const display = await User.findOneAndUpdate({id: req.user.id},{imagepath:result.secure_url},{new: true});
         return result.colors;
         } catch (error) {
         console.error(error);
@@ -302,27 +338,36 @@ const createImageTag = (publicId, ...colors) => {
   const imageTag = await createImageTag(publicId);
 
   // Log the image tag to the console
-  console.log(imageTag);
-
 })();
 
-//image upload ends
-
-
+req.user.imagepath = req.file.path;
 
 res.redirect('/');
 
+//image upload ends
+
 }catch(error)
 {
-  ;
+  res.sendStatus(500);
 }
 })
 
-/////////////////////////
-// Uploads an image file
-/////////////////////////
+app.post('/helpdesk', checkAuthenticated , async(req,res) =>{
+  try {
+    const issuename = req.body.issuename;
+    const issuebody = req.body.issuebody;
+    console.log(issuename);
+    console.log(issuebody);
 
+    const disp = await Ticket.create({user_id:req.body.id,issue_name:issuename,issue_body:issuebody},{new: true}, function (err, awesome_instance) {
 
+  tickets.push({issue_name:issuename,issue_body:issuebody});
+
+  if (err) return console.error(err)})
+     res.redirect('/supportpage');   
+  } catch (error) {
+  }
+})
 
 app.listen(PORT,()=>{
   console.log(`Server Running at ${PORT}`);

@@ -1,19 +1,22 @@
+
 const mongoose = require('mongoose')
 const dotenv = require('dotenv').config() 
+
 const express = require('express')
 const app = express()
+
 var multer = require('multer');
+
 const PORT = process.env.PORT || 4500;
+
 const bcrypt = require('bcrypt')
 const passport = require('passport')
 const flash = require('express-flash')
 const session = require('express-session')
 const methodOverride = require('method-override')
+
 const User = require('./Models/user.js');
 const Ticket = require('./Models/ticket.js');
-
-
-
 
 // Require the cloudinary library
 const cloudinary = require('cloudinary').v2;
@@ -40,15 +43,18 @@ app.use('/scss',express.static(__dirname + 'public/assets/scss'));
 app.use('/colors',express.static(__dirname + 'public/assets/colors'));
 app.use('/images',express.static(__dirname + 'public/images'));
 app.use('/uploads', express.static('uploads'));
+
+// local storage
 const users = []
 const tickets = []
 
+//mongo initialization
 mongoose.connect("mongodb://0.0.0.0:27017/UserData", {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }, e => console.error(e));
 
-//mongo
+//mongo connection
 const db = mongoose.connection;
 db.on("error", console.error.bind(console, "connection error: "));
 db.once("open", function () {
@@ -56,7 +62,7 @@ db.once("open", function () {
 });
 
 
-// fetching mongo db data
+// fetching mongo db data to local storage
 fetchdata();
 
 async function fetchdata()
@@ -104,45 +110,95 @@ app.use(passport.session())
 app.use(methodOverride('_method'))
 
 
-// routes
-
-app.get('/supportpage',(req,res)=>{
-  res.render('SupportPage.ejs');
+app.get('/error',(req,res)=>{
+  res.render('404error.ejs');
 })
 
+// Admin Dashboard 
+app.get('/dashboard', checkAuthenticated , (req,res)=>{
+  res.render('adminDashboard.ejs',{name: req.user.name})
+})
+
+// Admin Dashboard - Package Relation
+app.get('/choosepackage', checkAuthenticated , (req,res)=>{
+  res.render('userpackage.ejs');
+})
+
+app.post('/choosepackage',(req,res)=>{
+  
+})
+
+app.get('/adminpackage', checkAuthenticated , (req,res)=>{
+  res.render('adminpackage.ejs',{name: req.user.name});
+})
+
+//  Admin Dashboard - Ticket Relation
+app.get('/AnswerTicket',checkAuthenticated,(req,res)=>{
+res.render('AnswerTicket.ejs',{name: req.user.name,userimage:req.user.imagepath});
+})
+
+app.post('/AnswerTicket',checkAuthenticated,(req,res)=>{
+
+})
+
+//  Admin Dashboard - Set Account Status Relation
+app.get('/setaccountstatus',(req,res)=>{
+  res.render('setaccountstatus.ejs')
+})
+
+app.post('/setaccountstatus',checkAuthenticated,(req,res)=>{
+  
+})
+
+// routes
+
+// Ticket/Support User-Side 
+app.get('/supportpage',checkAuthenticated,(req,res)=>{
+  res.render('SupportPage.ejs',{name: req.user.name,userimage:req.user.imagepath});
+})
+
+app.get('/helpdesk', checkAuthenticated , (req,res)=>{
+  res.render('helpdesk.ejs',{name: req.user.name,userimage:req.user.imagepath});
+})
+
+
+// login 
 app.get('/login', checkNotAuthenticated, (req, res) => {
   res.render('login.ejs')
 })
 
+// Homepage
 app.get('/Home', (req,res)=>{
   res.render('landingpage.ejs')
 })
 
-
+// when user is loggedIn
 app.get('/', checkAuthenticated, async(req, res) => {
   res.render('index.ejs', { name: req.user.name,userimage:req.user.imagepath})
-  // console.log(" current id " + req.user.id);
+ console.log(" current id " + req.user.id);
+
 })
 
+//user json
 app.get('/users', (req,res)=>{
   res.json(users)
 })
 
+//ticket json
 app.get('/ticket',(req,res)=>{
   res.json(tickets);
 })
 
+// settings - user side
 app.get('/settings',checkAuthenticated,(req,res)=>{
-  res.render('settings.ejs',{ name: req.user.name});
+  res.render('settings.ejs',{ name: req.user.name,userimage:req.user.imagepath});
 })
 
+// profile - pic user side
 app.get('/profilepicupload',(req,res)=>{
   res.render('profilepicupload.ejs');
 })
 
-app.get('/helpdesk', checkAuthenticated , (req,res)=>{
-  res.render('helpdesk.ejs');
-})
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
     
@@ -152,12 +208,13 @@ app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
 }
 ))
 
+// user registration
 app.get('/register', checkNotAuthenticated, (req, res) => {
   res.render('register.ejs')
 })
 
 
-
+// edit user profile 
 app.get('/editpassword',checkAuthenticated,(req,res)=>{
   res.render('editpass.ejs');
 })
@@ -169,6 +226,9 @@ const display = await User.findOneAndUpdate({id: req.user.id},{password:newpassw
 
 req.user.password = newpassword;
 })
+
+
+// registration
 
 app.post('/register', checkNotAuthenticated, async (req, res) => {
   try {
@@ -208,6 +268,8 @@ res.redirect('/login')
   }
 })
 
+// session checkin-checkout
+
 app.delete('/logout', (req, res) => {
   req.logOut()
   res.redirect('/Home')
@@ -228,8 +290,9 @@ function checkNotAuthenticated(req, res, next) {
   next()
 }
 
+//edit user profile - user profile
 app.get('/edituserprofile',checkAuthenticated,(req,res)=>{
-  res.render('edit.ejs');
+  res.render('edit.ejs',{name: req.user.name,userimage:req.user.imagepath});
 })
 
 app.post('/edituserprofile',checkAuthenticated, async(req,res,next)=>{
@@ -247,11 +310,13 @@ res.redirect('/');
 next();
 
 } catch (error) {
-  res.sendStatus(500);
+  res.redirect('/error');
 }
   
 })
 
+
+// multer for saving images to local
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, './uploads')
@@ -263,6 +328,7 @@ var storage = multer.diskStorage({
 var upload = multer({ storage: storage })
 
 
+// uploading images to cloudinary
 app.post('/profilepicupload', upload.single('path'), async (req,res)=>{
 try{
  
@@ -314,7 +380,7 @@ const createImageTag = (publicId, ...colors) => {
   // Create an image tag with transformations applied to the src URL
   let imageTag = cloudinary.image(publicId, {
     transformation: [
-      { width: 250, height: 250, gravity: 'faces', crop: 'thumb' },
+      { aspect_ratio: "1.0", height: 100, crop: "fit" },
       { radius: 'max' },
       { effect: 'outline:10', color: effectColor },
       { background: backgroundColor },
@@ -348,9 +414,11 @@ res.redirect('/');
 
 }catch(error)
 {
-  res.sendStatus(500);
+  res.redirect('/error');
 }
 })
+
+// Ticketing/Support System 
 
 app.post('/helpdesk', checkAuthenticated , async(req,res) =>{
   try {
@@ -363,11 +431,15 @@ app.post('/helpdesk', checkAuthenticated , async(req,res) =>{
 
   tickets.push({issue_name:issuename,issue_body:issuebody});
 
-  if (err) return console.error(err)})
+if (err) return console.error(err)})
      res.redirect('/supportpage');   
   } catch (error) {
+    res.redirect('/error');
   }
 })
+
+
+// PORT
 
 app.listen(PORT,()=>{
   console.log(`Server Running at ${PORT}`);

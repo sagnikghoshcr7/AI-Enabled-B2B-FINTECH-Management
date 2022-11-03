@@ -143,7 +143,7 @@
                                                 <div class="drop-heading">
                                                     <div class="text-center">
                                                         <h5 class="text-dark mb-0 fs-14 fw-semibold"><%=name%></h5>
-                                                        <small class="text-muted">User</small>
+                                                        <small class="text-muted"><%=status%></small>
                                                     </div>
                                                 </div>
                                                 <Form method="GET" action="/">
@@ -221,23 +221,26 @@
                                                                     <div class="text-dark">
                                                                         <h3 class="h3 mb-2"><%=name%></h3>
                                                                         <br>
-                                                                      
+                                                                        
                                                                         <br>
                                                                         <form action="/edituserprofile" method="GET">
-                                                                            <button class="btn-blue btn-outline border-0" style="width: 100px; height: 40px;">Edit Profile</button>
+                                                                            <button class="btn btn-outline-primary " style="width: 150px; height: 40px;">Edit Profile</button>
                                                                           </form>
                                                                           <br>
-                 
+                                                                          <form action="/choosepackage" method="GET">
+                                                                            <button class="btn btn-outline-primary " style="width: 150px; height: 40px;">Choose a package</button>
+                                                                          </form>
+                                                                          <br>
                                                                           <form action="/settings" method="GET">
-                                                                          <button class="btn-blue btn-outline border-0" style="width: 100px; height: 40px;">Settings</button>
+                                                                          <button class="btn btn-outline-primary " style="width: 150px; height: 40px;">Settings</button>
                                                                           </form>
                                                                           <br>
                                                                           <form action="/helpdesk" method="GET">
-                                                                            <button class="btn-blue btn-outline border-0" style="width: 100px; height: 40px;">Create a ticket</button>
+                                                                            <button class="btn btn-outline-primary " style="width: 150px; height: 40px;">Create a ticket</button>
                                                                             </form>
                                                                           <br>
                                                                           <form class="form" action="/logout?_method=DELETE" method="POST">
-                                                                            <button class="btn-blue btn-outline border-0" style="width: 100px; height: 40px;" type="submit">Log Out</button>
+                                                                            <button class="btn btn-outline-primary" style="width: 150px; height: 40px;" type="submit">Log Out</button>
                                                                           </form>
                                                                     </div>
                                                                 </div>
@@ -773,7 +776,7 @@
             <div class="container">
                 <div class="row align-items-center flex-row-reverse">
                     <div class="col-md-12 col-sm-12 text-center">
-                        Copyright © <span id="year"></span> <a href="javascript:void(0)">Sash</a>. Designed with <span class="fa fa-heart text-danger"></span> by <a href="javascript:void(0)"> Spruko </a> All rights reserved.
+                        Copyright © <span id="year"></span> <a href="javascript:void(0)">XYZ</a>. Designed with <span class="fa fa-heart text-danger"></span> by <a href="javascript:void(0)"> Spruko </a> All rights reserved.
                     </div>
                 </div>
             </div>

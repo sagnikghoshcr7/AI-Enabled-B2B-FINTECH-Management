@@ -71,13 +71,6 @@
                                 <div class="collapse navbar-collapse" id="navbarSupportedContent-4">
                                     <div class="d-flex order-lg-2">
                                        
-                                        
-                                        <!-- COUNTRY -->
-                                       
-                                        <!-- Theme-Layout -->
-                                        
-                                        <!-- CART -->
-                                        
                                         <!-- FULL-SCREEN -->
                                         <div class="dropdown  d-flex notifications">
                                             <a class="nav-link icon" data-bs-toggle="dropdown"><i
@@ -86,7 +79,7 @@
                                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                                 <div class="drop-heading border-bottom">
                                                     <div class="d-flex">
-                                                        <h6 class="mt-1 mb-0 fs-16 fw-semibold text-dark">Notifications
+                                                        <h6 class="mt-1 mb-0 fs-16 fw-semibold text-dark">Notification
                                                         </h6>
                                                     </div>
                                                 </div>
@@ -96,7 +89,7 @@
                                                             <i class="fe fe-mail"></i>
                                                         </div>
                                                         <div class="mt-1 wd-80p">
-                                                            <h5 class="notification-label mb-1">1
+                                                            <h5 class="notification-label mb-1">2
                                                             </h5>
                                                             <span class="notification-subtext">3 days ago</span>
                                                         </div>
@@ -106,7 +99,7 @@
                                                             <i class="fe fe-check-circle"></i>
                                                         </div>
                                                         <div class="mt-1 wd-80p">
-                                                            <h5 class="notification-label mb-1">2</h5>
+                                                            <h5 class="notification-label mb-1">3</h5>
                                                             <span class="notification-subtext">2 hours ago</span>
                                                         </div>
                                                     </a>
@@ -115,7 +108,7 @@
                                                             <i class="fe fe-shopping-cart"></i>
                                                         </div>
                                                         <div class="mt-1 wd-80p">
-                                                            <h5 class="notification-label mb-1">3
+                                                            <h5 class="notification-label mb-1">4
                                                             </h5>
                                                             <span class="notification-subtext">30 min ago</span>
                                                         </div>
@@ -125,7 +118,7 @@
                                                             <i class="fe fe-user-plus"></i>
                                                         </div>
                                                         <div class="mt-1 wd-80p">
-                                                            <h5 class="notification-label mb-1">4</h5>
+                                                            <h5 class="notification-label mb-1">5</h5>
                                                             <span class="notification-subtext">1 day ago</span>
                                                         </div>
                                                     </a>
@@ -137,9 +130,9 @@
                                             </div>
                                         </div>
                                         <!-- NOTIFICATIONS -->
-                                        
+                                      
                                         <!-- MESSAGE-BOX -->
-                                       
+                                    
                                         <!-- SIDE-MENU -->
                                         <div class="dropdown d-flex profile-1">
                                             <a href="javascript:void(0)" data-bs-toggle="dropdown" class="nav-link leading-none d-flex">
@@ -149,7 +142,7 @@
                                             <div class="dropdown-menu dropdown-menu-end dropdown-menu-arrow">
                                                 <div class="drop-heading">
                                                     <div class="text-center">
-                                                        <h5 class="text-dark mb-0 fs-14 fw-semibold"><%= name %></h5>
+                                                        <h5 class="text-dark mb-0 fs-14 fw-semibold"><%=name%></h5>
                                                         <small class="text-muted"><%=status%></small>
                                                     </div>
                                                 </div>
@@ -188,12 +181,7 @@
                         </a>
                         <!-- LOGO -->
                     </div>
-                    <div class="main-sidemenu">
-                        <div class="slide-left disabled" id="slide-left"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24"><path d="M13.293 6.293 7.586 12l5.707 5.707 1.414-1.414L10.414 12l4.293-4.293z"/></svg></div>
-                       
-                        <div class="slide-right" id="slide-right"><svg xmlns="http://www.w3.org/2000/svg" fill="#7b8191" width="24" height="24" viewBox="0 0 24 24"><path d="M10.707 17.707 16.414 12l-5.707-5.707-1.414 1.414L13.586 12l-4.293 4.293z"/></svg></div>
-                    </div>
-                </div>
+                    
                 <!--/APP-SIDEBAR-->
             </div>
 
@@ -206,127 +194,362 @@
 
                         <!-- PAGE-HEADER -->
                         <div class="page-header">
-                            <h1 class="page-title">Edit Profile</h1>
+                           
                             <div>
-                                
+                                <ol class="breadcrumb">
+                                    <li class="breadcrumb-item"><a href="javascript:void(0)">Pages</a></li>
+                                    <li class="breadcrumb-item active" aria-current="page">Choose a package </li>
+                                </ol>
                             </div>
                         </div>
                         <!-- PAGE-HEADER END -->
 
                         <!-- ROW-1 OPEN -->
-                        <div class="row">
-                            <div class="col-xl-4">
+                        <div class="row" id="user-profile">
+                            <div class="col-lg-12">
                                 <div class="card">
-                                    <div class="card-header">
-                                        <div class="card-title">Edit Password</div>
-                                    </div>
                                     <div class="card-body">
-                                        <div class="text-center chat-image mb-5">
-                                            <div class="avatar avatar-xxl chat-profile mb-3 brround">
-                                                <img alt="avatar" src="<%= userimage %>" class="brround">
+                                        <div class="wideget-user mb-2">
+                                            <div class="row">
+                                                <div class="col-lg-12 col-md-12">
+                                                    <div class="row">
+                                                             <div class="bg-landing section bg-image-style">
+                                <div class="container">
+                                    <div class="row">
+                                        <h4 class="text-center fw-semibold">Choose a package </h4>
+                                        <span class="landing-title"></span>
+                                        <h2 class="text-center fw-semibold">Choose the <span class="text-primary">Perfect
+                                                Package</span>.</h2>
+                                        <div class="pricing-tabs">
+                                            <div class="pri-tabs-heading text-center">
+                                                <ul class="nav nav-price">
+                                                    <li><a data-bs-toggle="tab" href="#month">Monthly</a></li>
+                                                   
+                                                </ul>
                                             </div>
-                                            <div class="main-chat-msg-name">
-                                                <a href="profile.html">
-                                                <h5 class="mb-1 text-dark fw-semibold"><%= name %></h5>
-                                                </a>
-                                                <br>
-                                                
-                                               <div class="form-group">
-                                                <form method="POST" action="/profilepicupload" enctype="multipart/form-data">
-                                                    <div>
-                                                       
-                                                     <input  type="file" name="path" required/>
+                                            <div class="tab-content">
+                                                <div class="tab-pane pb-0 active show" id="annualyear">
+                                                    <div class="row d-flex align-items-center justify-content-center">
+                                                        <div class="col-lg-4 col-xl-4 col-md-8 col-sm-12">
+                                                            <div class="card p-3 pricing-card reveal revealrotate">
+                                                                <div class="card-header d-block text-justified pt-2">
+                                                                    <p class="fs-18 fw-semibold mb-1">Package Name</p>
+                                                                    <p class="text-justify fw-semibold mb-1"> <span
+                                                                            class="fs-30 me-2">$</span><span
+                                                                            class="fs-30 me-1">399</span><span
+                                                                            class="fs-25"><span
+                                                                                class="op-0-5 text-muted text-20">/</span>
+                                                                            year</span></p>
+                                                                    <p class="fs-13 mb-1">Lorem ipsum dolor sit amet
+                                                                        consectetur adipisicing elit. Iure quos debitis
+                                                                        aliquam .</p>
+                                                                    <p class="fs-13 mb-1 text-secondary">Billed monthly
+                                                                        on regular basis!</p>
+                                                                </div>
+                                                                <div class="card-body pt-2">
+                                                                    <ul class="text-justify pricing-body ps-0">
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline p-2 fs-16 text-secondary"></i><strong>
+                                                                                2 Free</strong> Domain Name</li>
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline p-2 fs-16 text-secondary"></i>
+                                                                            <strong>3 </strong> One-Click Apps
+                                                                        </li>
+                                                                        <li class="text-muted"><i
+                                                                                class="mdi mdi-close-circle-outline p-2 fs-16 text-gray"></i><strong>
+                                                                                1 </strong> Databases</li>
+                                                                        <li class="text-muted"><i
+                                                                                class="mdi mdi-close-circle-outline p-2 fs-16 text-gray"></i><strong>
+                                                                                Unlimited </strong> Cloud Storage</li>
+                                                                        <li class="text-muted"><i
+                                                                                class="mdi mdi-close-circle-outline p-2 fs-16 text-gray"></i><strong>
+                                                                                Money </strong> BackGuarantee</li>
+                                                                        <li class=text-muted"><i
+                                                                                class="mdi mdi-close-circle-outline p-2 fs-16 text-gray"></i><strong>
+                                                                                24/7</strong> support</li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="card-footer text-center border-top-0 pt-1">
+                                                                    <button
+                                                                        class="btn btn-lg btn-outline-secondary btn-block">
+                                                                        <span class="ms-4 me-4">Select</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 col-xl-4 col-md-8 col-sm-12">
+                                                            <div
+                                                                class="card p-3 border-primary pricing-card advanced reveal revealrotate">
+                                                                <div class="card-header d-block text-justified pt-2">
+                                                                    <p class="fs-18 fw-semibold mb-1 pe-0">Package Name<span
+                                                                            class="tag bg-primary text-white float-end">Limited
+                                                                            Deal</span></p>
+                                                                    <p class="text-justify fw-semibold mb-1"> <span
+                                                                            class="fs-30 me-2">$</span><span
+                                                                            class="fs-30 me-1">1,299</span><span
+                                                                            class="fs-25"><span
+                                                                                class="op-0-5 text-muted text-20">/</span>
+                                                                            year</span></p>
+                                                                    <p class="fs-13 mb-2">Lorem ipsum dolor sit amet
+                                                                        consectetur adipisicing elit. Iure quos debitis
+                                                                        aliquam .</p>
+                                                                    <p class="fs-13 mb-1 text-primary">Billed monthly on
+                                                                        regular basis!</p>
+                                                                </div>
+                                                                <div class="card-body pt-2">
+                                                                    <ul class="text-justify pricing-body ps-0">
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-primary p-2 fs-16"></i>
+                                                                            <strong> 5 Free</strong> Domain Name
+                                                                        </li>
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-primary p-2 fs-16"></i><strong>5
+                                                                            </strong> One-Click Apps</li>
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-primary p-2 fs-16"></i><strong>
+                                                                                3 </strong> Databases</li>
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-primary p-2 fs-16"></i><strong>
+                                                                                Unlimited </strong> Cloud Storage</li>
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-primary p-2 fs-16"></i><strong>
+                                                                                Money </strong> BackGuarantee</li>
+                                                                        <li class="mb-6"><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-primary p-2 fs-16"></i><strong>
+                                                                                24/7</strong> support</li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="card-footer text-center border-top-0 pt-1">
+                                                                    <button
+                                                                        class="btn btn-lg btn-primary-gradient text-white btn-block">
+                                                                        <span class="ms-4 me-4">Select</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 col-xl-4 col-md-8 col-sm-12">
+                                                            <div class="card p-3 pricing-card reveal revealrotate">
+                                                                <div class="card-header d-block text-justified pt-2">
+                                                                    <p class="fs-18 fw-semibold mb-1">Package Name</p>
+                                                                    <p class="text-justify fw-semibold mb-1"> <span
+                                                                            class="fs-30 me-2">$</span><span
+                                                                            class="fs-30 me-1">899</span><span
+                                                                            class="fs-25"><span
+                                                                                class="op-0-5 text-muted text-20">/</span>
+                                                                            year</span></p>
+                                                                    <p class="fs-13 mb-1">Lorem ipsum dolor sit amet
+                                                                        consectetur adipisicing elit. Iure quos debitis
+                                                                        aliquam .</p>
+                                                                    <p class="fs-13 mb-1  text-danger">Billed monthly on
+                                                                        regular basis!</p>
+                                                                </div>
+                                                                <div class="card-body pt-2">
+                                                                    <ul class="text-justify pricing-body ps-0">
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-danger p-2 fs-16"></i><strong>
+                                                                                1 Free</strong> Domain Name</li>
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-danger p-2 fs-16"></i><strong>4
+                                                                            </strong> One-Click Apps</li>
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-danger p-2 fs-16"></i><strong>
+                                                                                2 </strong> Databases</li>
+                                                                        <li class="text-muted"><i
+                                                                                class="mdi mdi-close-circle-outline text-gray p-2 fs-16"></i><strong>
+                                                                                Unlimited </strong> Cloud Storage</li>
+                                                                        <li class="text-muted"><i
+                                                                                class="mdi mdi-close-circle-outline text-gray p-2 fs-16"></i><strong>
+                                                                                Money </strong> BackGuarantee</li>
+                                                                        <li class="text-muted"><i
+                                                                                class="mdi mdi-close-circle-outline text-gray p-2 fs-16"></i><strong>
+                                                                                24/7</strong> support</li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="card-footer text-center border-top-0 pt-1">
+                                                                    <button
+                                                                        class="btn btn-lg btn-outline-danger btn-block">
+                                                                        <span class="ms-4 me-4">Select</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                    <div class="card-footer text-end">
-                                                        <input class="btn btn-success m-1" style="margin-top: 20px;" type="submit" value="Upload" />
+                                                </div>
+                                                <div class="tab-pane" id="month">
+                                                    <div class="row d-flex align-items-center justify-content-center">
+                                                        <div class="col-lg-4 col-xl-4 col-md-8 col-sm-12">
+                                                            <div class="card p-3 pricing-card">
+                                                                <div class="card-header d-block text-justified pt-2">
+                                                                    <p class="fs-18 fw-semibold mb-1">Package Name</p>
+                                                                    <p class="text-justify fw-semibold mb-1"> <span
+                                                                            class="fs-30 me-2">$</span><span
+                                                                            class="fs-30 me-1">39</span><span
+                                                                            class="fs-25"><span
+                                                                                class="op-0-5 text-muted text-20">/</span>
+                                                                            month</span></p>
+                                                                    <p class="fs-13 mb-1">Lorem ipsum dolor sit amet
+                                                                        consectetur adipisicing elit. Iure quos debitis
+                                                                        aliquam .</p>
+                                                                    <p class="fs-13 mb-1 text-secondary">Billed monthly
+                                                                        on regular basis!</p>
+                                                                </div>
+                                                                <div class="card-body pt-2">
+                                                                    <ul class="text-justify pricing-body ps-0">
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline p-2 fs-16 text-secondary"></i><strong>
+                                                                                2 Free</strong> Domain Name</li>
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline p-2 fs-16 text-secondary"></i>
+                                                                            <strong>3 </strong> One-Click Apps
+                                                                        </li>
+                                                                        <li class="text-muted"><i
+                                                                                class="mdi mdi-close-circle-outline p-2 fs-16 text-gray"></i><strong>
+                                                                                1 </strong> Databases</li>
+                                                                        <li class="text-muted"><i
+                                                                                class="mdi mdi-close-circle-outline p-2 fs-16 text-gray"></i><strong>
+                                                                                Unlimited </strong> Cloud Storage</li>
+                                                                        <li class="text-muted"><i
+                                                                                class="mdi mdi-close-circle-outline p-2 fs-16 text-gray"></i><strong>
+                                                                                Money </strong> BackGuarantee</li>
+                                                                        <li class=text-muted"><i
+                                                                                class="mdi mdi-close-circle-outline p-2 fs-16 text-gray"></i><strong>
+                                                                                24/7</strong> support</li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="card-footer text-center border-top-0 pt-1">
+                                                                    <button
+                                                                        class="btn btn-lg btn-outline-secondary btn-block">
+                                                                        <span class="ms-4 me-4">Select</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 col-xl-4 col-md-8 col-sm-12">
+                                                            <div class="card p-3 border-primary pricing-card advanced">
+                                                                <div class="card-header d-block text-justified pt-2">
+                                                                    <p class="fs-18 fw-semibold mb-1 pe-0">Package Name<span
+                                                                            class="tag bg-primary text-white float-end">Limited
+                                                                            Deal</span></p>
+                                                                    <p class="text-justify fw-semibold mb-1"> <span
+                                                                            class="fs-30 me-2">$</span><span
+                                                                            class="fs-30 me-1">199</span><span
+                                                                            class="fs-25"><span
+                                                                                class="op-0-5 text-muted text-20">/</span>
+                                                                            month</span></p>
+                                                                    <p class="fs-13 mb-2">Lorem ipsum dolor sit amet
+                                                                        consectetur adipisicing elit. Iure quos debitis
+                                                                        aliquam .</p>
+                                                                    <p class="fs-13 mb-1 text-primary">Billed monthly on
+                                                                        regular basis!</p>
+                                                                </div>
+                                                                <div class="card-body pt-2">
+                                                                    <ul class="text-justify pricing-body ps-0">
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-primary p-2 fs-16"></i>
+                                                                            <strong> 5 Free</strong> Domain Name
+                                                                        </li>
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-primary p-2 fs-16"></i><strong>5
+                                                                            </strong> One-Click Apps</li>
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-primary p-2 fs-16"></i><strong>
+                                                                                3 </strong> Databases</li>
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-primary p-2 fs-16"></i><strong>
+                                                                                Unlimited </strong> Cloud Storage</li>
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-primary p-2 fs-16"></i><strong>
+                                                                                Money </strong> BackGuarantee</li>
+                                                                        <li class="mb-6"><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-primary p-2 fs-16"></i><strong>
+                                                                                24/7</strong> support</li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="card-footer text-center border-top-0 pt-1">
+                                                                    <button
+                                                                        class="btn btn-lg btn-primary-gradient text-white btn-block">
+                                                                        <span class="ms-4 me-4">Select</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <div class="col-lg-4 col-xl-4 col-md-8 col-sm-12">
+                                                            <div class="card p-3 pricing-card">
+                                                                <div class="card-header d-block text-justified pt-2">
+                                                                    <p class="fs-18 fw-semibold mb-1">Package Name</p>
+                                                                    <p class="text-justify fw-semibold mb-1"> <span
+                                                                            class="fs-30 me-2">$</span><span
+                                                                            class="fs-30 me-1">69</span><span
+                                                                            class="fs-25"><span
+                                                                                class="op-0-5 text-muted text-20">/</span>
+                                                                            month</span></p>
+                                                                    <p class="fs-13 mb-1">Lorem ipsum dolor sit amet
+                                                                        consectetur adipisicing elit. Iure quos debitis
+                                                                        aliquam .</p>
+                                                                    <p class="fs-13 mb-1  text-danger">Billed monthly on
+                                                                        regular basis!</p>
+                                                                </div>
+                                                                <div class="card-body pt-2">
+                                                                    <ul class="text-justify pricing-body ps-0">
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-danger p-2 fs-16"></i><strong>
+                                                                                1 Free</strong> Domain Name</li>
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-danger p-2 fs-16"></i><strong>4
+                                                                            </strong> One-Click Apps</li>
+                                                                        <li><i
+                                                                                class="mdi mdi-checkbox-marked-circle-outline text-danger p-2 fs-16"></i><strong>
+                                                                                2 </strong> Databases</li>
+                                                                        <li class="text-muted"><i
+                                                                                class="mdi mdi-close-circle-outline text-gray p-2 fs-16"></i><strong>
+                                                                                Unlimited </strong> Cloud Storage</li>
+                                                                        <li class="text-muted"><i
+                                                                                class="mdi mdi-close-circle-outline text-gray p-2 fs-16"></i><strong>
+                                                                                Money </strong> BackGuarantee</li>
+                                                                        <li class="text-muted"><i
+                                                                                class="mdi mdi-close-circle-outline text-gray p-2 fs-16"></i><strong>
+                                                                                24/7</strong> support</li>
+                                                                    </ul>
+                                                                </div>
+                                                                <div class="card-footer text-center border-top-0 pt-1">
+                                                                    <button
+                                                                        class="btn btn-lg btn-outline-danger btn-block">
+                                                                        <span class="ms-4 me-4">Select</span>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </div>
                                                     </div>
-                                                </form>
-                                               </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                                                            
+                                                        </div>
+                                                    </div>
+                                                    <div class="row">
+                                                     
+                                                    </div>
+                                                </div>
 
                                             </div>
                                         </div>
-                                        
-                                            
-                                            
-                                        
-                                        <div class="form-group">
-                                            <form action="/editpassword" method="POST">
-                                                <label class="form-label">New Password</label>
-                                                <div class="wrap-input100 validate-input input-group" id="Password-toggle1">
-                                                    <a href="javascript:void(0)" class="input-group-text bg-white text-muted">
-                                                        <i class="zmdi zmdi-eye text-muted" aria-hidden="true"></i>
-                                                    </a>
-                                                    <input class="input100" name="newpass" type="password" placeholder="New Password">
-                                                </div>
-                                                <div class="card-footer text-end">
-                                                    <button class="btn btn-success m-1">Update</a>
-                                                </div>
-                                            </form>
-                                                
-                                        
-                                        </div>
-                                        
                                     </div>
-                                    
-                
                                 </div>
-                                <div class="card panel-theme">
-                                    
-                                   
-                                </div>
+                               
                             </div>
-                            <div class="col-xl-8">
-                                <div class="card">
-                                    <div class="card-header">
-                                        <h3 class="card-title">Edit Profile</h3>
-                                    </div>
-                                    <div class="card-body">
-                                        <div class="row">
-                                            <form class="form" action="/edituserprofile" method="POST">
-                                            <div class="col-lg-6 col-md-12">
-                                                <div class="form-group">
-                                                    <label for="exampleInputname">First Name</label>
-                                                    <input type="text" class="form-control" id="exampleInputname" name="namenew" placeholder="Name">
-                                                </div>
-                                            </div>
-                                            
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Email address</label>
-                                            <input type="email" class="form-control" id="exampleInputEmail1" name="emailnew" placeholder="Email address">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputnumber">Country Name</label>
-                                            <input type="text" class="form-control" id="exampleInputnumber" name="country" placeholder="Country Name">
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputnumber">Contact Number</label>
-                                            <input type="number" class="form-control" id="exampleInputnumber" name="phnNo" placeholder="Contact number">
-                                        </div>
-                                        
-                                     <br>  
-                                    <div class="card-footer text-end">
-                                        <button  class="btn btn-success my-1">Save</button>
-                                        
-                                    </div>
-                                </form>
-                                </div>
-                                <div class="row">
-                                    
-                                   
-                                    
-                                </div>
-                                
-                            </div>
+                            <!-- COL-END -->
                         </div>
                         <!-- ROW-1 CLOSED -->
 
                     </div>
-                    <!--CONTAINER CLOSED -->
+                    <!-- CONTAINER CLOSED -->
 
                 </div>
             </div>
-            <!--app-content open-->
+            <!--app-content closed-->
         </div>
 
         <!-- Sidebar-right -->
@@ -864,13 +1087,6 @@
 
     <!-- SIDEBAR JS -->
     <script src="../assets/plugins/sidebar/sidebar.js"></script>
-
-    <!-- SHOW PASSWORD JS -->
-    <script src="../assets/js/show-password.min.js"></script>
-
-    <!-- INTERNAL SELECT2 JS -->
-    <script src="../assets/plugins/select2/select2.full.min.js"></script>
-    <script src="../assets/js/select2.js"></script>
 
     <!-- Perfect SCROLLBAR JS-->
     <script src="../assets/plugins/p-scroll/perfect-scrollbar.js"></script>

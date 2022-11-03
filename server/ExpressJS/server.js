@@ -116,20 +116,20 @@ app.get('/error',(req,res)=>{
 
 // Admin Dashboard 
 app.get('/dashboard', checkAuthenticated , (req,res)=>{
-  res.render('adminDashboard.ejs',{name: req.user.name})
+  res.render('adminDashboard.ejs',{name: req.user.name,userimage:req.user.imagepath})
 })
 
 // Admin Dashboard - Package Relation
 app.get('/choosepackage', checkAuthenticated , (req,res)=>{
-  res.render('userpackage.ejs');
+  res.render('userpackage.ejs',{name: req.user.name,userimage:req.user.imagepath,status:"User"});
 })
 
 app.post('/choosepackage',(req,res)=>{
   
 })
 
-app.get('/adminpackage', checkAuthenticated , (req,res)=>{
-  res.render('adminpackage.ejs',{name: req.user.name});
+app.get('/createpackage', checkAuthenticated , (req,res)=>{
+  res.render('Createpackage.ejs',{name: req.user.name,userimage:req.user.imagepath,status:"Admin"});
 })
 
 //  Admin Dashboard - Ticket Relation
@@ -154,11 +154,16 @@ app.post('/setaccountstatus',checkAuthenticated,(req,res)=>{
 
 // Ticket/Support User-Side 
 app.get('/supportpage',checkAuthenticated,(req,res)=>{
-  res.render('SupportPage.ejs',{name: req.user.name,userimage:req.user.imagepath});
+  if(req.user.email==="shiv@gmail.com" && req.user.password==="$2b$10$hjvriv/kOO4mlmJ64kkI9eJh/fmQ3wODevla2Din5gmQLfBidyTF.")
+  {
+  res.render('SupportPage.ejs',{ name: req.user.name,userimage:req.user.imagepath,status:"Admin"});
+  }else{
+    res.render('SupportPage.ejs',{ name: req.user.name,userimage:req.user.imagepath,status:"User"});
+  }
 })
 
 app.get('/helpdesk', checkAuthenticated , (req,res)=>{
-  res.render('helpdesk.ejs',{name: req.user.name,userimage:req.user.imagepath});
+  res.render('helpdesk.ejs',{name: req.user.name,userimage:req.user.imagepath,status:"User"});
 })
 
 
@@ -173,8 +178,22 @@ app.get('/Home', (req,res)=>{
 })
 
 // when user is loggedIn
-app.get('/', checkAuthenticated, async(req, res) => {
-  res.render('index.ejs', { name: req.user.name,userimage:req.user.imagepath})
+app.get('/', checkAuthenticated, async(req, res) => 
+{
+if(req.user.email==="shiv@gmail.com" && req.user.password==="$2b$10$hjvriv/kOO4mlmJ64kkI9eJh/fmQ3wODevla2Din5gmQLfBidyTF.")
+ {
+ console.log('Hello')
+ res.render('admin_index.ejs',{ name: req.user.name,userimage:req.user.imagepath,status:"Admin"})
+}
+  else
+  {
+
+    console.log('HelloB')
+    console.log("URL is :"+ req.user.imagepath)
+    res.render('index.ejs', { name: req.user.name,userimage:req.user.imagepath,status:"User"})
+
+  }
+
  console.log(" current id " + req.user.id);
 
 })
@@ -191,17 +210,26 @@ app.get('/ticket',(req,res)=>{
 
 // settings - user side
 app.get('/settings',checkAuthenticated,(req,res)=>{
-  res.render('settings.ejs',{ name: req.user.name,userimage:req.user.imagepath});
+  if(req.user.email==="shiv@gmail.com" && req.user.password==="$2b$10$hjvriv/kOO4mlmJ64kkI9eJh/fmQ3wODevla2Din5gmQLfBidyTF.")
+  {
+  res.render('settings.ejs',{ name: req.user.name,userimage:req.user.imagepath,status:"Admin"});
+  }else{
+    res.render('settings.ejs',{ name: req.user.name,userimage:req.user.imagepath,status:"User"});
+  }
 })
 
 // profile - pic user side
 app.get('/profilepicupload',(req,res)=>{
-  res.render('profilepicupload.ejs');
+  if(req.user.email==="shiv@gmail.com" && req.user.password==="$2b$10$hjvriv/kOO4mlmJ64kkI9eJh/fmQ3wODevla2Din5gmQLfBidyTF.")
+  {
+  res.render('profilepicupload.ejs',{ name: req.user.name,userimage:req.user.imagepath,status:"Admin"});
+  }else{
+    res.render('profilepicupload.ejs',{ name: req.user.name,userimage:req.user.imagepath,status:"User"});
+  }
 })
 
 
 app.post('/login', checkNotAuthenticated, passport.authenticate('local', {
-    
   successRedirect: '/',
   failureRedirect: '/login',
   failureFlash: true
@@ -292,7 +320,15 @@ function checkNotAuthenticated(req, res, next) {
 
 //edit user profile - user profile
 app.get('/edituserprofile',checkAuthenticated,(req,res)=>{
-  res.render('edit.ejs',{name: req.user.name,userimage:req.user.imagepath});
+
+  if(req.user.email==="shiv@gmail.com" && req.user.password==="$2b$10$hjvriv/kOO4mlmJ64kkI9eJh/fmQ3wODevla2Din5gmQLfBidyTF.")
+  {
+    res.render('edit.ejs', { name: req.user.name,userimage:req.user.imagepath,status: "Admin"})
+  }else{
+    res.render('edit.ejs', { name: req.user.name,userimage:req.user.imagepath,status:  "User"})
+  }
+      // res.render('edit.ejs', { name: req.user.name,userimage:req.user.imagepath})
+   
 })
 
 app.post('/edituserprofile',checkAuthenticated, async(req,res,next)=>{
@@ -380,7 +416,7 @@ const createImageTag = (publicId, ...colors) => {
   // Create an image tag with transformations applied to the src URL
   let imageTag = cloudinary.image(publicId, {
     transformation: [
-      { aspect_ratio: "1.0", height: 100, crop: "fit" },
+      { aspect_ratio: "1.0", height: 100, crop: "fit",quality:20},
       { radius: 'max' },
       { effect: 'outline:10', color: effectColor },
       { background: backgroundColor },

@@ -2,9 +2,10 @@
 
 
 ---
+## 📇 Description
+Build an AI Enabled FinTech B2B Invoice Management System Integrated with ML, React and JDBC Servlets
 
-
-
+---
 ## 🗒️ Introduction to B2B Operations
 
 The B2B world operates differently from the B2C or C2C world. Businesses work with other businesses on credit. When a buyer business orders goods from the seller business, the seller business issues an invoice for the same. This invoice for the goods contains various information like the details of the goods purchased and when it should be paid. This is known in accounting terminology as “Accounts Receivable”
@@ -25,7 +26,8 @@ The B2B world operates differently from the B2C or C2C world. Businesses work wi
 ---
 
 ## 📊 Diagram
-![](https://github.com/sagnikghoshcr7/Draw.io/blob/master/hrc.drawio.png#gh-light-mode-only)
+<img src="https://github.com/sagnikghoshcr7/Draw.io/blob/master/hrc-ai-invoice/hrc.drawio.light.png#gh-light-mode-only" width="650">
+<img src="https://github.com/sagnikghoshcr7/Draw.io/blob/master/hrc-ai-invoice/hrc.dark.drawio.png#gh-dark-mode-only" width="650">
 
 ---
 
@@ -72,4 +74,3 @@ The B2B world operates differently from the B2C or C2C world. Businesses work wi
 ![Data Load](https://user-images.githubusercontent.com/58620359/166948556-2b1f4153-0a89-45fd-bc98-884d41df5364.png)
 ![Data Add](https://user-images.githubusercontent.com/58620359/166948897-80e5a827-3e5a-4775-9aa9-45e2606234cf.png)
 ![Analytics View](https://user-images.githubusercontent.com/58620359/166948934-af77f017-9baf-49ce-ac3c-85290c1bd7e1.png)
-
